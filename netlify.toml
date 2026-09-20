@@ -1,0 +1,10 @@
+[build]
+  functions = "netlify/functions"
+  publish = "public"
+
+# Cho phép frontend gọi /api/chat như bình thường,
+# Netlify sẽ tự chuyển hướng sang function thật ở /.netlify/functions/chat
+[[redirects]]
+  from = "/api/chat"
+  to = "/.netlify/functions/chat"
+  status = 200

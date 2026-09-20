@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trợ lý Hóa học AI</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #f5f6f8;
+    color: #1a1a1a;
+  }
+  h1 { font-size: 22px; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+  .tab-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: #e0e0e0;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .tab-btn.active { background: #2d6cdf; color: white; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* Chat */
+  #chat-log {
+    background: white;
+    border-radius: 10px;
+    padding: 12px;
+    height: 320px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+  }
+  .msg { margin-bottom: 10px; line-height: 1.5; }
+  .msg.user { text-align: right; }
+  .msg.user span { background: #2d6cdf; color: white; }
+  .msg.bot span { background: #eee; }
+  .msg span { display: inline-block; padding: 8px 12px; border-radius: 10px; max-width: 85%; }
+  .input-row { display: flex; gap: 8px; }
+  input, select {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  button.send {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    background: #2d6cdf;
+    color: white;
+    cursor: pointer;
+  }
+  button.send:disabled { opacity: 0.6; }
+
+  /* Exercise */
+  .ex-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+  .ex-card {
+    background: white;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+  }
+  .ex-card .opt { display: block; margin: 4px 0; cursor: pointer; }
+  .ex-card .answer { color: #2d8a3e; font-weight: 600; margin-top: 8px; display: none; }
+  .ex-card .explain { color: #555; font-size: 13px; margin-top: 4px; display: none; }
+  .reveal-btn { font-size: 12px; color: #2d6cdf; background: none; border: none; cursor: pointer; padding: 0; margin-top: 6px; }
+  .loading { color: #888; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<h1>🧪 Trợ lý Hóa học AI</h1>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="qa">💬 Hỏi đáp</button>
+  <button class="tab-btn" data-tab="exercise">📝 Tạo bài tập</button>
+</div>
+
+<!-- TAB: Q&A -->
+<div class="panel active" id="panel-qa">
+  <div id="chat-log"></div>
+  <div class="input-row">
+    <input id="chat-input" type="text" placeholder="Hỏi về Hóa học..." />
+    <button class="send" id="chat-send">Gửi</button>
+  </div>
+</div>
+
+<!-- TAB: Exercise -->
+<div class="panel" id="panel-exercise">
+  <div class="ex-form">
+    <input id="ex-topic" type="text" placeholder="Chủ đề (VD: Phản ứng oxi hóa khử)" />
+    <select id="ex-level">
+      <option value="dễ">Dễ</option>
+      <option value="trung bình" selected>Trung bình</option>
+      <option value="khó">Khó</option>
+    </select>
+    <select id="ex-count">
+      <option value="3">3 câu</option>
+      <option value="5" selected>5 câu</option>
+      <option value="10">10 câu</option>
+    </select>
+    <button class="send" id="ex-generate">Tạo bài tập</button>
+  </div>
+  <div id="ex-results"></div>
+</div>
+
+<script>
+  // ---- Tab switching ----
+  document.querySelectorAll(".tab-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+      document.querySelectorAll(".panel").forEach((p) => p.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById("panel-" + btn.dataset.tab).classList.add("active");
+    });
+  });
+
+  // ---- Chat Q&A ----
+  const chatLog = document.getElementById("chat-log");
+  const chatInput = document.getElementById("chat-input");
+  const chatSend = document.getElementById("chat-send");
+
+  function addMsg(text, sender) {
+    const div = document.createElement("div");
+    div.className = "msg " + sender;
+    div.innerHTML = `<span>${text}</span>`;
+    chatLog.appendChild(div);
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
+
+  async function sendChat() {
+    const message = chatInput.value.trim();
+    if (!message) return;
+    addMsg(message, "user");
+    chatInput.value = "";
+    chatSend.disabled = true;
+    addMsg("Đang trả lời...", "bot");
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: "qa", message }),
+      });
+      const data = await res.json();
+      chatLog.lastChild.remove(); // xóa "Đang trả lời..."
+      if (data.error) {
+        addMsg("⚠️ " + data.error, "bot");
+      } else {
+        addMsg(data.reply, "bot");
+      }
+    } catch (e) {
+      chatLog.lastChild.remove();
+      addMsg("⚠️ Lỗi kết nối server", "bot");
+    } finally {
+      chatSend.disabled = false;
+    }
+  }
+
+  chatSend.addEventListener("click", sendChat);
+  chatInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") sendChat();
+  });
+
+  // ---- Exercise generator ----
+  const exGenerate = document.getElementById("ex-generate");
+  const exResults = document.getElementById("ex-results");
+
+  exGenerate.addEventListener("click", async () => {
+    const topic = document.getElementById("ex-topic").value.trim();
+    const level = document.getElementById("ex-level").value;
+    const count = document.getElementById("ex-count").value;
+
+    if (!topic) {
+      alert("Vui lòng nhập chủ đề");
+      return;
+    }
+
+    exResults.innerHTML = '<p class="loading">Đang tạo bài tập...</p>';
+    exGenerate.disabled = true;
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: "exercise", topic, level, count }),
+      });
+      const data = await res.json();
+
+      if (data.error) {
+        exResults.innerHTML = `<p>⚠️ ${data.error}</p>`;
+        return;
+      }
+
+      if (data.raw) {
+        exResults.innerHTML = `<pre>${data.raw}</pre>`;
+        return;
+      }
+
+      exResults.innerHTML = "";
+      data.exercises.forEach((q, i) => {
+        const card = document.createElement("div");
+        card.className = "ex-card";
+        card.innerHTML = `
+          <strong>Câu ${i + 1}: ${q.question}</strong>
+          ${q.options.map((o) => `<span class="opt">${o}</span>`).join("")}
+          <button class="reveal-btn">Xem đáp án</button>
+          <div class="answer">✅ Đáp án: ${q.answer}</div>
+          <div class="explain">${q.explanation || ""}</div>
+        `;
+        card.querySelector(".reveal-btn").addEventListener("click", (e) => {
+          card.querySelector(".answer").style.display = "block";
+          card.querySelector(".explain").style.display = "block";
+          e.target.style.display = "none";
+        });
+        exResults.appendChild(card);
+      });
+    } catch (e) {
+      exResults.innerHTML = "<p>⚠️ Lỗi kết nối server</p>";
+    } finally {
+      exGenerate.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html>
