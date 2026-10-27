@@ -125,6 +125,15 @@ body.layout #stick, body.layout #tbtns button{pointer-events:auto}
 .plist li{display:flex;justify-content:space-between;gap:10px;padding:9px 12px;border-radius:8px;background:rgba(232,244,239,.07);font-weight:600}
 .plist li small{color:var(--muted);font-weight:600}
 .seg button:disabled{cursor:default;opacity:.75}
+.online .stat{font-size:14px}
+#mkRoom.locked,#joinRoom.locked{opacity:.55}
+#acct input{width:100%;box-sizing:border-box}
+#acct{display:flex;flex-direction:column;gap:10px}
+#board table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+#board th,#board td{padding:7px 6px;text-align:right;border-bottom:1px solid rgba(232,244,239,.12)}
+#board th:nth-child(2),#board td:nth-child(2){text-align:left}
+#board th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+#board tr.me td{color:var(--brass);font-weight:800}
 #side{position:fixed;left:calc(10px + env(safe-area-inset-left,0px));top:calc(170px + env(safe-area-inset-top,0px));display:flex;flex-direction:column;gap:8px;z-index:11}
 #side button.micOn{background:#2e7d4f;border-color:#7fe0a5}
 #side.swap{left:auto;right:calc(10px + env(safe-area-inset-right,0px));top:calc(186px + env(safe-area-inset-top,0px));flex-direction:row}
@@ -141,6 +150,16 @@ body.layout #stick, body.layout #tbtns button{pointer-events:auto}
   <div class="panel">
     <h1 class="brand">Hải Chiến Bo</h1>
     <p class="lede">Sáu chiến hạm hai tầng ra khơi giữa những hòn đảo lớn. Cầm kiếm từ đầu, lên đảo tìm súng xịn, leo thang sang tàu địch, vá tàu mình và giữ cho nó nổi tới cuối bo.</p>
+    <div class="field online" id="acct"><span>Tài khoản</span>
+      <div id="acctOut">
+        <div class="row"><input class="txt" id="acNick" maxlength="16" placeholder="Nick (3-16 ký tự)" autocomplete="username" aria-label="Nick">
+        <input class="txt" id="acPass" type="password" maxlength="72" placeholder="Mật khẩu (từ 6 ký tự)" autocomplete="current-password" aria-label="Mật khẩu"></div>
+        <div class="row" style="margin-top:10px"><button class="go" id="acLogin" type="button" style="font-size:17px">Đăng nhập</button><button class="ghost" id="acSign" type="button">Tạo nick mới</button></div>
+      </div>
+      <div id="acctIn" hidden><p class="stat" id="acInfo"></p>
+        <div class="row" style="margin-top:10px"><button class="ghost" id="acBoard" type="button">Bảng xếp hạng</button><button class="ghost" id="acOut" type="button">Đăng xuất</button></div></div>
+      <p class="note" id="acMsg">Tạo nick để chơi online và lưu thành tích lên bảng xếp hạng. Không có nick vẫn chơi một mình được.</p>
+    </div>
     <p class="err" id="noGL" hidden>Trình duyệt này không chạy được đồ họa 3D (WebGL). Thầy thử mở bằng Chrome hoặc Edge bản mới.</p>
     <div class="field"><span>Số người mỗi tàu</span>
       <div class="seg" id="segCrew">
@@ -162,6 +181,7 @@ body.layout #stick, body.layout #tbtns button{pointer-events:auto}
         <button type="button" data-v="20" aria-pressed="false">20 tàu: bắn nhau liên tục</button>
       </div>
     </div>
+    <p class="note" style="margin:4px 0 0"><a href="#" id="adminKeyBtn" style="color:var(--muted)">🔑 Nhập khóa admin</a></p>
     <label class="check" id="adminRow" hidden><input type="checkbox" id="s-admin"> Chế độ admin (chỉ tài khoản của thầy): bắn nhanh, sát thương cao, khó chết; chơi một mình hoặc khi thầy là chủ phòng</label>
     <div class="field"><span>Góc nhìn ban đầu</span>
       <div class="seg" id="segView">
@@ -187,7 +207,7 @@ body.layout #stick, body.layout #tbtns button{pointer-events:auto}
         <input class="txt" id="codeIn" maxlength="4" placeholder="MÃ" autocomplete="off" aria-label="Mã phòng">
         <button class="ghost" id="joinRoom" type="button">Vào phòng</button>
       </div>
-      <p class="note" id="netMsg">Một người tạo phòng rồi gửi mã 4 ký tự cho bạn bè; ai mở trang này cũng vào được. Số người mỗi tàu và độ khó lấy theo lựa chọn ở trên của chủ phòng.</p>
+      <p class="note" id="netMsg">Đăng nhập nick ở trên, một người tạo phòng rồi gửi mã 4 ký tự cho bạn bè. Số người mỗi tàu và độ khó lấy theo lựa chọn ở trên của chủ phòng.</p>
     </div>
     <div class="field"><span>Độ hiếm của súng</span>
       <ul class="rar" id="rarList"></ul>
@@ -270,6 +290,14 @@ body.layout #stick, body.layout #tbtns button{pointer-events:auto}
       <button class="go" id="lobStart" type="button">Bắt đầu</button>
       <button class="ghost" id="lobLeave" type="button">Rời phòng</button>
     </div>
+  </div>
+</div>
+
+<div class="overlay" id="board" hidden>
+  <div class="panel">
+    <h2 class="endtitle" style="font-size:32px;color:var(--brass)">Bảng xếp hạng</h2>
+    <table><thead><tr><th>#</th><th>Nick</th><th>Thắng</th><th>Hạ gục</th><th>Trận</th></tr></thead><tbody id="boardRows"></tbody></table>
+    <button class="go" id="boardClose" type="button">Đóng</button>
   </div>
 </div>
 
@@ -1160,6 +1188,8 @@ function endFor(p,win){ if(p===G.player) endGame(win); else if(NET.mode==='host'
 function endGame(win){
   if(G.ended) return;
   G.ended=true; G.win=win; if(!G.net) G.over=true;
+  // saved to the player's account when signed in
+  if(window.HCB_onEnd) try{ window.HCB_onEnd({win, kills:G.player.kills||0, place:win?1:(G.teams[G.player.team].place||TEAMS.length), online:G.net}); }catch(_){}
   const g=G;
   setTimeout(()=>{
     if(G!==g || !running) return;
@@ -3699,7 +3729,7 @@ async function netOpen(code, asHost){
     for(const r of res) if(r.status==='fulfilled') r.value.leave().catch(()=>{});
     netBusy(false);
     const c=bad.reason && bad.reason.code;
-    netMsg(c==='not_permitted' ? 'Tài khoản này chưa được phép vào phòng chơi của trang. Nhờ chủ trang mời bạn qua nút Chia sẻ.' : 'Không vào được phòng lúc này, thử lại sau vài giây.',true);
+    netMsg(c==='not_permitted' ? 'Cần đăng nhập nick trước khi vào phòng.' : 'Không vào được phòng lúc này, thử lại sau vài giây.',true);
     return;
   }
   const rooms={}; RN.forEach((k,i)=>rooms[k]=res[i].value);
@@ -3887,7 +3917,7 @@ function checkAdmin(){
 }
 checkAdmin(); setTimeout(checkAdmin,1500);
 // on Netlify the nick signs in later: look again while the menu is up
-if(window.HCB) setInterval(()=>{ if(!running) checkAdmin(); },2000);
+if(window.HCB||window.HCB_ADMIN_CHECK) setInterval(()=>{ if(!running) checkAdmin(); },2000);
 $('#rarList').innerHTML=RAR.map(r=>'<li style="background:'+r.c+'">'+r.n+' ×'+r.m+'</li>').join('');
 // phones: block pinch and double-tap zoom; if Safari zoomed anyway, snap the page back to 1x
 (()=>{
