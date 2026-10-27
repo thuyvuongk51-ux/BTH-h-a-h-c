@@ -5,12 +5,13 @@ const HCB=window.HCB_R={user:null};
 const err=(code,message)=>Object.assign(new Error(message||code),{code});
 
 /* ---------- rooms over one WebSocket ---------- */
+const adminKey=()=>{ try{ return localStorage.getItem('hcb-admin-key')||''; }catch(_){ return ''; } };
 let ws=null, me=null, opening=null, retry=0;
 const rooms={};   // name -> room object
 function connect(){
   if(opening) return opening;
   opening=new Promise((res,rej)=>{
-    const s=new WebSocket((location.protocol==='https:'?'wss://':'ws://')+location.host+'/ws?t='+encodeURIComponent(token)); let done=false, denied=false;
+    const s=new WebSocket((location.protocol==='https:'?'wss://':'ws://')+location.host+'/ws?t='+encodeURIComponent(token)+'&k='+encodeURIComponent(adminKey())); let done=false, denied=false;
     const fail=e=>{ if(!done){ done=true; opening=null; rej(e); } };
     s.onmessage=e=>{ let m; try{ m=JSON.parse(e.data); }catch(_){ return; }
       if(m.t==='denied'){ denied=true; fail(err('not_permitted','login')); return; }

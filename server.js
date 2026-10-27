@@ -130,9 +130,13 @@ wss.on('connection',async (ws,req)=>{
   ws.on('pong',()=>{ ws.alive=true; });
   ws.on('close',()=>{ for(const name of [...ws.rooms]) leave(ws,name); });
   // online play needs a signed-in nick
-  let u=null; try{ u=await userOf(new URL(req.url,'http://x').searchParams.get('t')); }catch(e){ console.error(e.message); }
+  const qs=new URL(req.url,'http://x').searchParams;
+  let u=null; try{ u=await userOf(qs.get('t')); }catch(e){ console.error(e.message); }
   if(!u){ send(ws,{t:'denied'}); ws.close(4001,'login'); return; }
   ws.nick=u.nick;
+  // a verified admin (ADMIN_NICK, or the ADMIN_KEY typed on that device) gets _a:1 stamped on everything they send, so a host can trust it
+  const key=process.env.ADMIN_KEY||'';
+  ws.admin=pub(u).admin || (key.length>=6 && qs.get('k')===key);
   send(ws,{t:'hello',peer:ws.peer,nick:u.nick});
   ws.on('message',buf=>{
     let m; try{ m=JSON.parse(buf); }catch(_){ return; }
@@ -146,8 +150,9 @@ wss.on('connection',async (ws,req)=>{
       others(name,ws.peer,{t:'p',room:name,peer:ws.peer,pres:{},at:Date.now()});
     } else if(m.t==='p'){
       const r=rooms.get(name), me=r&&r.get(ws.peer); if(!me || !m.pres || typeof m.pres!=='object') return;
-      me.pres=m.pres; me.at=Date.now();
-      others(name,ws.peer,{t:'p',room:name,peer:ws.peer,pres:m.pres,at:me.at});
+      const pres={...m.pres}; delete pres._a; if(ws.admin) pres._a=1;
+      me.pres=pres; me.at=Date.now();
+      others(name,ws.peer,{t:'p',room:name,peer:ws.peer,pres,at:me.at});
     } else if(m.t==='leave') leave(ws,name);
   });
 });
