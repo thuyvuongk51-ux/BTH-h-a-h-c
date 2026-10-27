@@ -81,8 +81,9 @@ function render(){
   HCB.adminCache=null;
 }
 async function refresh(){
-  if(!token){ HCB.user=null; render(); return; }
-  try{ const j=await call('/api/me'); HCB.user=j.user; if(!j.user) setToken(''); }
+  try{ const j=await call('/api/me'); HCB.user=token?j.user:null; if(token && !j.user){ setToken(''); msg('Phiên đăng nhập đã hết hoặc nick không còn trên máy chủ, thầy đăng nhập lại.',true); }
+    // without a database the server keeps nicks in a file that Render wipes whenever it sleeps or redeploys
+    if(j.store==='file') msg('Máy chủ chưa nối cơ sở dữ liệu (biến DATABASE_URL trên Render) nên nick sẽ mất mỗi khi máy chủ ngủ hoặc cập nhật.',true); }
   catch(e){ msg('Chưa kết nối được máy chủ. Nếu trang vừa mở sau lâu không ai chơi, đợi khoảng 1 phút rồi tải lại trang.',true); }
   render();
 }

@@ -71,7 +71,7 @@ function body(req){ return new Promise((ok,no)=>{ let b=''; req.on('data',c=>{ b
 async function api(req,res,p){
   const ip=String(req.headers['x-forwarded-for']||req.socket.remoteAddress||'').split(',')[0].trim();
   if(p==='/api/top' && req.method==='GET') return json(res,200,{top:await db.top()});
-  if(p==='/api/me' && req.method==='GET'){ const u=await userOf(bearer(req)); return json(res,200,{user:u?pub(u):null}); }
+  if(p==='/api/me' && req.method==='GET'){ const u=await userOf(bearer(req)); return json(res,200,{user:u?pub(u):null, store:db.kind}); }
   if(req.method!=='POST') return json(res,405,{error:'method'});
   const raw=await body(req);
   if(p==='/api/admin'){ const key=process.env.ADMIN_KEY||''; res.writeHead(200,{'content-type':'text/plain'}); res.end(key.length>=6 && raw===key ? 'yes' : 'no'); return; }
