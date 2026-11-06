@@ -219,7 +219,7 @@ body.tui #wbar button.on{background:rgba(240,180,76,.3)}
       </div>
     </div>
     <p class="note" style="margin:4px 0 0"><a href="#" id="adminKeyBtn" style="color:var(--muted)">🔑 Nhập khóa admin</a></p>
-    <label class="check" id="adminRow" hidden><input type="checkbox" id="s-admin"> Chế độ admin (chỉ tài khoản của thầy): bắn nhanh x10, sát thương x2.5, chịu đòn 1/4, thay đạn không tốn đạn túi; chơi một mình, làm chủ phòng hoặc vào phòng người khác</label>
+    <label class="check" id="adminRow" hidden><input type="checkbox" id="s-admin"> Chế độ admin (chỉ tài khoản của thầy): bắn nhanh hơn 10%, sát thương x2.5, chịu đòn 1/4, thay đạn không tốn đạn túi; chơi một mình, làm chủ phòng hoặc vào phòng người khác</label>
     <div class="field"><span>Góc nhìn ban đầu</span>
       <div class="seg" id="segView">
         <button type="button" data-v="tp" aria-pressed="true">Thứ ba</button>
@@ -1385,7 +1385,7 @@ function fireGun(p, ang, extraSpread, cdMul){
   if(p.onBoat && p.deck===1) return false;
   if(p.rl>0) return false;
   if(gunMag(g)<=0){ if(!startReload(p)){ p.cd=.5; if(p.ammo<=0) say(p,'Hết đạn: xuống khoang lấy đạn hoặc nhặt trên đảo. Nhấn 1 để cầm kiếm'); } return false; }
-  p.cd=w.cd*(cdMul||1)*(p.adm?.1:1);
+  p.cd=w.cd*(cdMul||1)*(p.adm?1/1.1:1);
   g.mag--;
   const dmg=w.dmg*RAR[g.rar].m*(p.adm?2.5:1), h=personH(p)+10, T=p.tgt;
   let vh=0, a3=false;
@@ -4523,7 +4523,7 @@ function beginGame(o){
   newGame(o); running=true; cam.mode=setup.view;
   // admin only for the sailor of whoever runs the match (single player or the room's host)
   G.player.adm = ADMIN_OK && !!SET.admin;
-  if(G.player.adm) toast('Chế độ admin: bắn nhanh x10, sát thương x2.5, chịu đòn chỉ 1/4, thay đạn không tốn đạn túi');
+  if(G.player.adm) toast('Chế độ admin: bắn nhanh hơn 10%, sát thương x2.5, chịu đòn chỉ 1/4, thay đạn không tốn đạn túi');
   // online, every ship carries a name; in a duel a player's ship is named after them
   if(G.net) nameTeams(o.mode);
   const b=G.teams[G.player.team].boat;
