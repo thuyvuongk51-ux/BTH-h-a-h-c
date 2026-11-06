@@ -1,98 +1,41 @@
-# Trợ lý Hóa học AI — Bản Netlify Functions
+# Hải Chiến Bo trên Render
 
-Bộ code này gồm:
-- `netlify/functions/chat.js` — backend (Netlify Function) gọi Gemini API, giữ API key an toàn
-- `public/index.html` — giao diện demo: tab Hỏi đáp + tab Tạo bài tập (y hệt bản Vercel, không cần sửa gì)
-- `netlify.toml` — cấu hình để `/api/chat` tự động trỏ sang function thật
+Thư mục này gồm trang game và một máy chủ nhỏ. Máy chủ lo ba việc: tài khoản nick (đăng nhập bằng nick + mật khẩu), bảng xếp hạng, và chuyển dữ liệu phòng chơi qua WebSocket để máy khách ít giật.
 
----
+## Đưa lên Render lần đầu (khoảng 10 phút)
 
-## Bước 1: Lấy API key Gemini (miễn phí)
+1. Tạo repository trên GitHub, ví dụ `hai-chien-bo`.
+2. Bấm **Add file → Upload files**, kéo vào `package.json`, `server.js` và thư mục `public`. Bấm **Commit changes**.
+3. Trên https://render.com bấm **New → Web Service**, chọn repository đó. Chọn Region **Singapore**, Runtime **Node**, Build Command `npm install`, Start Command `npm start`.
+4. Ở mục **Environment**, thêm các biến ở phần dưới, rồi bấm **Create Web Service**.
 
-1. Vào https://aistudio.google.com/apikey
-2. Đăng nhập Google, bấm "Create API key"
-3. Copy key này lại (dùng ở Bước 3)
+## Các biến trong mục Environment của Render
 
-## Bước 2: Đưa code lên GitHub
+| Biến | Ý nghĩa |
+|---|---|
+| `DATABASE_URL` | Địa chỉ cơ sở dữ liệu để lưu nick (xem phần dưới). **Bắt buộc nếu muốn giữ nick lâu dài.** |
+| `ADMIN_NICK` | Nick của thầy. Nick này đăng nhập là thấy ô chế độ admin. |
+| `ADMIN_KEY` | Khóa admin cũ (từ 6 ký tự), vẫn dùng được qua dòng 🔑 Nhập khóa admin. |
 
-```bash
-cd ai-chemistry-app-netlify
-git init
-git add .
-git commit -m "AI chemistry assistant - Netlify version"
-git remote add origin <link-repo-github-cua-ban>
-git push -u origin main
-```
+## Tạo cơ sở dữ liệu miễn phí (Neon, khoảng 5 phút)
 
-## Bước 3: Deploy lên Netlify (miễn phí)
+Gói Free của Render xóa sạch ổ đĩa mỗi lần máy chủ ngủ dậy hoặc cập nhật. Vì vậy nick phải lưu ở một cơ sở dữ liệu bên ngoài. Neon có gói miễn phí không hết hạn.
 
-1. Vào https://app.netlify.com → đăng nhập bằng GitHub
-2. Bấm "Add new site" → "Import an existing project" → chọn repo vừa push
-3. Netlify tự đọc `netlify.toml` nên không cần cấu hình build command hay publish directory
-4. Trước khi deploy (hoặc sau, vào **Site configuration → Environment variables**), thêm:
-   - Key: `GEMINI_API_KEY`
-   - Value: (dán API key từ Bước 1)
-5. Bấm Deploy
+1. Vào https://neon.tech, bấm **Sign up** và đăng nhập bằng GitHub.
+2. Tạo project: đặt tên `hai-chien-bo`, chọn region **AWS Asia Pacific (Singapore)**, bấm **Create project**.
+3. Ở trang project, bấm **Connect**. Chép dòng **Connection string**, dạng `postgresql://...@...neon.tech/neondb?sslmode=require`.
+4. Trên Render, mở service game, vào **Environment → Add Environment Variable**. Key là `DATABASE_URL`, Value là dòng vừa chép. Bấm **Save, rebuild, and deploy**.
 
-Sau khi xong, Netlify cho bạn 1 link dạng `https://ten-app.netlify.app` — mở link đó là dùng được ngay.
+Máy chủ tự tạo bảng khi chạy lần đầu, thầy không cần chạy lệnh SQL nào. Trong **Logs** của Render sẽ có dòng `accounts stored in postgres`. Nếu thấy `accounts stored in file` là chưa có `DATABASE_URL`: nick vẫn tạo được nhưng sẽ mất khi máy chủ khởi động lại.
 
-### Test nhanh bằng CLI (tùy chọn)
+## Chơi
 
-```bash
-npm install -g netlify-cli
-netlify dev
-```
+- Mỗi người mở link game, bấm **Tạo nick mới** (nick 3–16 ký tự, mật khẩu từ 6 ký tự). Lần sau chỉ cần **Đăng nhập**, máy sẽ nhớ.
+- Phải đăng nhập mới tạo phòng hoặc vào phòng được. Không đăng nhập vẫn chơi một mình được.
+- Mỗi trận xong, số trận, số trận thắng, số hạ gục được lưu vào nick. Nút **Bảng xếp hạng** hiện top 20.
+- Nick không phân biệt dấu và chữ hoa: đã có "Thủy" thì không ai tạo được "thuy".
 
-Lệnh này chạy cả frontend lẫn function ở local (`http://localhost:8888`), tự đọc biến môi trường từ file `.env` nếu bạn tạo:
+## Lưu ý
 
-```
-GEMINI_API_KEY=your_key_here
-```
-
----
-
-## Tích hợp vào app HTML hiện có của bạn
-
-1. Copy `netlify/functions/chat.js` và `netlify.toml` vào project của bạn (giữ nguyên cấu trúc thư mục)
-2. Trong file JS của app, gọi y như trước — không đổi gì cả nhờ redirect trong `netlify.toml`:
-
-```javascript
-// Hỏi đáp
-const res = await fetch("/api/chat", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ mode: "qa", message: "Phản ứng oxi hóa khử là gì?" }),
-});
-const data = await res.json();
-console.log(data.reply);
-
-// Tạo bài tập
-const res2 = await fetch("/api/chat", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ mode: "exercise", topic: "Axit - Bazơ", level: "trung bình", count: 5 }),
-});
-const data2 = await res2.json();
-console.log(data2.exercises);
-```
-
----
-
-## Khác biệt so với bản Vercel
-
-| | Vercel | Netlify |
-|---|---|---|
-| Thư mục function | `api/` | `netlify/functions/` |
-| Format hàm | `export default function handler(req, res)` | `exports.handler = async (event) => {...}` |
-| Đường dẫn gọi thật | `/api/chat` (tự động) | `/.netlify/functions/chat` (có redirect về `/api/chat` trong `netlify.toml`) |
-| Biến môi trường | Project Settings → Environment Variables | Site configuration → Environment variables |
-
-Logic gọi Gemini, xử lý JSON bài tập, giới hạn độ dài câu hỏi... giữ nguyên 100% giữa 2 bản.
-
----
-
-## Lưu ý quan trọng
-
-- **Không bao giờ** đặt API key trực tiếp trong file HTML/JS chạy ở trình duyệt.
-- Free tier Gemini có giới hạn request/phút — nếu lớp học đông cùng lúc, cân nhắc thêm hàng đợi hoặc giới hạn số lần hỏi/học sinh/ngày.
-- Model đang dùng: `gemini-2.0-flash`. Có thể đổi trong `netlify/functions/chat.js`.
+- Gói Free cho máy chủ ngủ sau 15 phút không ai vào. Lần mở đầu tiên sau đó mất khoảng 1 phút để thức dậy.
+- Khi có bản game mới, chỉ cần thay `public/index.html` trên GitHub.
