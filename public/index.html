@@ -212,6 +212,8 @@ body.tui #wbar button.on{background:rgba(240,180,76,.3)}
         <button type="button" data-v="hard" aria-pressed="false">Khó</button>
       </div>
     </div>
+    <div class="field"><span>Độ rộng bản đồ</span><div class="seg segOpt" data-k="map"><button type="button" data-v="0.5" aria-pressed="false">Nhỏ</button><button type="button" data-v="0.75" aria-pressed="false">Vừa</button><button type="button" data-v="1" aria-pressed="true">Lớn</button></div></div>
+    <div class="field"><span>Tốc độ thu bo</span><div class="seg segOpt" data-k="zs"><button type="button" data-v="1.6" aria-pressed="false">Chậm</button><button type="button" data-v="1" aria-pressed="true">Thường</button><button type="button" data-v="0.6" aria-pressed="false">Nhanh</button><button type="button" data-v="0.35" aria-pressed="false">Rất nhanh</button></div></div>
     <div class="field" hidden><span>Số tàu trong trận (chơi một mình)</span>
       <div class="seg" id="segTeams">
         <button type="button" data-v="6" aria-pressed="true">6 tàu</button>
@@ -267,11 +269,13 @@ body.tui #wbar button.on{background:rgba(240,180,76,.3)}
       <li>Ai cũng bắt đầu với kiếm và súng lục (không bao giờ rơi). Đồ nhặt được vào túi, lên tàu thì cất vào kho tàu cho an toàn: gục là rơi hết túi đồ. Súng nằm rải rác trên đảo, màu càng hiếm bắn càng mạnh.</li>
       <li>Muốn xuống khoang thì đi thẳng vào cửa khoang giữa boong rồi theo cầu thang xuống; đi ngược lên cầu thang để lên boong.</li>
       <li>Mỗi tàu có thang hai bên mạn: bơi tới chân thang để leo lên, kể cả tàu địch.</li>
+      <li>Chòi gác trên đỉnh cột buồm: đứng ở chân thang dây cạnh cột, nhấn Tương tác (E) để leo lên bắn từ trên cao; Tương tác lần nữa để leo xuống, nhảy ở mép chòi là rơi xuống biển.</li>
       <li>Vá tàu: lấy gỗ trong khoang, tới lỗ thủng, cầm búa (phím 3) và giữ chuột trái để đóng nhiều nhát mới kín.</li>
       <li>Tời neo ở mũi tàu: thả neo thì tàu đứng yên. Thả hay nhổ neo đều phải kéo tời, càng nhiều người kéo càng nhanh.</li>
       <li>Trúng đại bác thì tàu thủng, nước tràn vào. Nước 100% là tàu chìm, cả đội bị loại.</li>
       <li>Biển và đảo rất rộng; cứ 3 phút bo lại thu hẹp một lần.</li>
       <li>Mỗi đảo có vài hòm kho báu (cột sáng vàng, chấm vàng trên bản đồ nhỏ): tới gần nhấn E để mở, bên trong rơi ra nhiều đồ và súng xịn.</li>
+      <li>Gần giữa mỗi đảo có hòm kho báu xịn (hòm to, cột sáng cam, chấm cam to trên bản đồ): chỉ ra súng, kiếm Sử thi hoặc Huyền thoại, pháo mũi, nâng cấp tàu.</li>
       <li>Hòm nâng cấp (hộp phát sáng): đỏ cam là pháo nạp nhanh, bắn thủng to hơn; xanh lá là thân tàu rò nước chậm hơn; xanh dương là sô múc được nhiều nước hơn; vàng là búa vá ít nhát hơn. Đi qua là nhặt, mỗi loại tối đa cấp 3 cho cả tàu, tàu chìm là mất.</li>
     </ul>
   </div>
@@ -321,6 +325,8 @@ body.tui #wbar button.on{background:rgba(240,180,76,.3)}
         <button type="button" data-v="team" aria-pressed="false">Tự chọn tàu (lập đội)</button>
       </div>
     </div>
+    <div class="field"><span>Độ rộng bản đồ (chủ phòng chọn)</span><div class="seg segOpt" data-k="map"><button type="button" data-v="0.5" aria-pressed="false">Nhỏ</button><button type="button" data-v="0.75" aria-pressed="false">Vừa</button><button type="button" data-v="1" aria-pressed="true">Lớn</button></div></div>
+    <div class="field"><span>Tốc độ thu bo (chủ phòng chọn)</span><div class="seg segOpt" data-k="zs"><button type="button" data-v="1.6" aria-pressed="false">Chậm</button><button type="button" data-v="1" aria-pressed="true">Thường</button><button type="button" data-v="0.6" aria-pressed="false">Nhanh</button><button type="button" data-v="0.35" aria-pressed="false">Rất nhanh</button></div></div>
     <div class="field" id="teamBox" hidden><span>Số người mỗi tàu (chủ phòng chọn)</span>
       <div class="seg" id="segCrewL"><button type="button" data-v="2" aria-pressed="false">2</button><button type="button" data-v="3" aria-pressed="false">3</button><button type="button" data-v="4" aria-pressed="false">4</button><button type="button" data-v="5" aria-pressed="false">5</button><button type="button" data-v="6" aria-pressed="false">6</button></div>
       <span>Tàu của bạn · ai chọn cùng số là chung tàu</span>
@@ -505,6 +511,7 @@ function floorW(x){ return SHIP ? shipTab(HWF_LOW,clamp(x,STERN,BOW)) : halfW(x)
 const HELM=[-160,0], HATCH=[70,0], WOOD=[-120,0], AMMO=[-50,46], BALLS=[-50,-46];
 const LADDER_X=-60;
 const BAIL_SPOTS=[[-10,-22],[-10,22],[-80,-24],[-80,24]];
+const MAST_X=31.5, NEST={x:36, y:305, r:30}, MFOOT=[MAST_X-15,0], MCLIMB_T=2.6;
 const CAPSTAN=[140,0], WINCH_SPOTS=[[140,20],[140,-20],[122,0],[158,0]], ANCHOR_TIME=9;
 const GSLOTS=[[120,-40],[120,40],[-30,-56],[-30,56],[20,-20]];
 const CANNON_X=[-110,-50,10,70];
@@ -548,7 +555,7 @@ function bladeStat(p){ const b=p.blade&&BLADES[p.blade.type]?p.blade:baseBlade()
 
 let G = null;
 const NET = {mode:'off'};
-let setup = {crew:3, diff:'normal', view:'tp', q:'high', teams:'6'};
+let setup = {crew:3, diff:'normal', view:'tp', q:'high', teams:'6', map:'1', zs:'1'};
 const cam = {yaw:0, tpPitch:.32, fpPitch:0, mode:'tp', tx:CX, ty:0, tz:CY, D:600};
 
 /* ---------- islands (big, hilly) ---------- */
@@ -804,6 +811,7 @@ function toWorld(b,lx,ly){ const c=Math.cos(b.ang), s=Math.sin(b.ang); return {x
 function toLocal(b,x,y){ const c=Math.cos(b.ang), s=Math.sin(b.ang), dx=x-b.x, dy=y-b.y; return {x:dx*c+dy*s, y:-dx*s+dy*c}; }
 function nearHull(b,x,y,pad){ const l=toLocal(b,x,y); return l.x>STERN-pad && l.x<BOW+pad && Math.abs(l.y) < halfW(clamp(l.x,STERN+1,BOW-1))+pad; }
 function clampDeck(p){
+  if(p.nest){ const dx=p.lx-NEST.x, dy=p.ly, d=Math.hypot(dx,dy)||1, r=clamp(d,9,NEST.r); p.lx=NEST.x+dx/d*r; p.ly=dy/d*r; return; }
   if(p.deck===0){ p.lx=clamp(p.lx,-176,185); const w=halfW(p.lx)*.92-8; p.ly=clamp(p.ly,-w,w); }
   else { p.lx=clamp(p.lx,-150,148); const w=Math.max(4,floorW(p.lx)*.92-6); p.ly=clamp(p.ly,-w,w); }
 }
@@ -844,13 +852,15 @@ function newGame(o){
   o=o||{};
   const seed=o.seed ?? Math.floor(Math.random()*1e9);
   G = {t:0, islands:[], items:[], teams:[], people:[], shots:[], fx:[], feed:[], toasts:[], over:false, paused:false, crateT:0, lootT:0, jobT:0,
-       diff:o.diff||setup.diff, crew:o.crew||setup.crew, hitT:-9, seed, net:!!o.net};
+       diff:o.diff||setup.diff, crew:o.crew||setup.crew, hitT:-9, seed, net:!!o.net,
+       mapK:clamp(+(o.map??setup.map)||1,.4,1), zs:clamp(+(o.zs??setup.zs)||1,.25,2)};
   const hum=o.hum||[{team:0, slot:0, nick:'Bạn'}];
   RNG=mulberry(seed);
   let tries=0;
-  while(G.islands.length<9 && tries<6000){
+  const nIs=Math.max(4,Math.round(9*G.mapK)), half=(CX-22000)*G.mapK;
+  while(G.islands.length<nIs && tries<6000){
     tries++;
-    const r=rand(8500,19000), x=rand(22000,WORLD-22000), y=rand(22000,WORLD-22000);
+    const r=rand(8500,19000), x=rand(CX-half,CX+half), y=rand(CY-half,CY+half);
     if(G.islands.some(o=>dist(x,y,o.x,o.y) < o.r*1.36 + r*1.36 + 9000)) continue;
     if(dist(x,y,CX,CY)<r*1.36+5000 && G.islands.length===0 && RNG()<.5) continue;
     const is={x,y,r,p1:rand(0,6.3),p2:rand(0,6.3),p3:rand(0,6.3),palms:[]};
@@ -877,12 +887,17 @@ function newGame(o){
     for(let i=0;i<n;i++) spawnIslandItem(is);
     // treasure chests: open one with E for a pile of loot
     for(let i=0;i<5;i++){ const p=islandPoint(is,rand(.15,.85)); G.items.push({x:p.x,y:p.y,type:'chest',float:false,isl:is,bob:rand(0,6.3)}); }
+    // golden chests sit near the middle of the island: a walk inland for the best loot
+    const ng=is.r>14000?2:1;
+    for(let i=0;i<ng;i++){ let p=null; for(let t=0;t<12;t++){ p=islandPoint(is,rand(.02,.16)); if(!(MTN && is.mtn && mtnAt(is,p.x,p.y))) break; }
+      G.items.push({x:p.x,y:p.y,type:'chest',gold:true,float:false,isl:is,bob:rand(0,6.3)}); }
     for(let i=0;i<5;i++){ const p=islandPoint(is,rand(.35,.92)); G.items.push({x:p.x,y:p.y,type:'gun',gun:rollGun(),float:false,isl:is,bob:rand(0,6.3)}); }
     for(let i=0;i<3;i++){ const p=islandPoint(is,rand(.35,.92)); G.items.push({x:p.x,y:p.y,type:'blade',blade:rollBlade(),float:false,isl:is,bob:rand(0,6.3)}); }
     for(let i=0;i<3;i++){ const p=islandPoint(is,rand(.3,.9)); G.items.push({x:p.x,y:p.y,type:'upg',up:rollUpg(),float:false,isl:is,bob:rand(0,6.3)}); }
   }
   for(const it of G.items) if(it.isl) unstick(it,18);
-  G.zone = {cx:CX, cy:CY, r:150000, ncx:CX, ncy:CY, nr:150000, phase:0, state:'wait', timer:PHASES[0].wait, fx:CX, fy:CY, fr:150000};
+  const r0=150000*G.mapK;
+  G.zone = {cx:CX, cy:CY, r:r0, ncx:CX, ncy:CY, nr:r0, phase:0, state:'wait', timer:PHASES[0].wait*G.zs, fx:CX, fy:CY, fr:r0};
   pickNextZone();
   for(let i=0;i<70;i++) spawnCrate();
 
@@ -893,7 +908,7 @@ function newGame(o){
   let pid=0;
   TEAMS.forEach((T,i)=>{
     const ang=a0+i*Math.PI*2/TEAMS.length;
-    let r=G.many?(i%2?26000:34000):76000, x, y, k=0;
+    let r=(G.many?(i%2?26000:34000):76000)*Math.max(.6,G.mapK), x, y, k=0;
     do { const aa=ang+(k%2?1:-1)*Math.floor(k/2)*.06; x=CX+Math.cos(aa)*r; y=CY+Math.sin(aa)*r; k++; if(k%12===0) r+=2000; } while(landAt(x,y,1000) && k<120);
     const boat={team:i, x, y, ang:ang+Math.PI, spd:0, water:0, holes:[], anchor:{prog:0, dir:0, down:false}, alive:true, hitFlash:0, wakeT:0, deadAt:-99, turnV:0, heavy:false,
                 gunCd:{}, aiGunT:0, lastHit:null,
@@ -929,7 +944,7 @@ function spawnIslandItem(is){
 function spawnCrate(){
   const z=G.zone;
   for(let t=0;t<40;t++){
-    const a=rand(0,Math.PI*2), rr=Math.sqrt(Math.random())*Math.min(z.r*.92, 85000);
+    const a=rand(0,Math.PI*2), rr=Math.sqrt(Math.random())*Math.min(z.r*.92, 85000*G.mapK);
     const x=clamp(z.cx+Math.cos(a)*rr,300,WORLD-300), y=clamp(z.cy+Math.sin(a)*rr,300,WORLD-300);
     if(landAt(x,y,350)) continue;
     G.items.push({x,y,type:CRATE_TYPES[Math.floor(Math.random()*CRATE_TYPES.length)], float:true, bob:rand(0,6.3)});
@@ -938,29 +953,31 @@ function spawnCrate(){
 }
 function pickNextZone(){
   const z=G.zone, P=PHASES[z.phase];
-  const maxOff=Math.max(0, Math.min(z.r, 90000) - P.r) * .85;
+  const pr=zoneR(z.phase), maxOff=Math.max(0, Math.min(z.r, 90000*G.mapK) - pr) * .85;
   for(let t=0;t<30;t++){
     const a=rand(0,Math.PI*2), off=rand(0, z.phase===0 ? Math.min(maxOff,18000) : maxOff);
     const x=clamp(z.cx+Math.cos(a)*off, 20000, WORLD-20000), y=clamp(z.cy+Math.sin(a)*off, 20000, WORLD-20000);
-    if(z.phase>=3 && landAt(x,y,P.r*.3+300)) continue;
+    if(z.phase>=3 && landAt(x,y,pr*.3+300)) continue;
     z.ncx=x; z.ncy=y; break;
   }
-  z.nr=P.r;
+  z.nr=pr;
 }
+// ring sizes shrink with the map; the last few stay small enough to force a fight
+function zoneR(i){ const r=PHASES[i].r; return Math.max(Math.min(r,1200), r*G.mapK); }
 function updateZone(dt){
   const z=G.zone;
   if(z.state==='final') return;
   z.timer-=dt;
   const P=PHASES[z.phase];
   if(z.state==='wait' && z.timer<=0){
-    z.state='shrink'; z.timer=P.shrink; z.fx=z.cx; z.fy=z.cy; z.fr=z.r;
+    z.state='shrink'; z.timer=P.shrink*G.zs; z.fx=z.cx; z.fy=z.cy; z.fr=z.r;
     if(G.teams[0].alive) toast('Bo bắt đầu thu hẹp!');
   } else if(z.state==='shrink'){
-    const k=clamp(1-z.timer/P.shrink,0,1);
+    const k=clamp(1-z.timer/(P.shrink*G.zs),0,1);
     z.cx=z.fx+(z.ncx-z.fx)*k; z.cy=z.fy+(z.ncy-z.fy)*k; z.r=z.fr+(z.nr-z.fr)*k;
     if(z.timer<=0){
       z.cx=z.ncx; z.cy=z.ncy; z.r=z.nr; z.phase++;
-      if(z.phase<PHASES.length){ z.state='wait'; z.timer=PHASES[z.phase].wait; pickNextZone(); }
+      if(z.phase<PHASES.length){ z.state='wait'; z.timer=PHASES[z.phase].wait*G.zs; pickNextZone(); }
       else { z.state='final'; z.phase=PHASES.length-1; }
     }
   }
@@ -970,7 +987,7 @@ function zoneRush(b){
   if(dc>z.r-500) return true;
   if(z.state==='final') return false;
   const dn=dist(b.x,b.y,z.ncx,z.ncy)-z.nr*.75; if(dn<=0) return false;
-  const P=PHASES[z.phase], left=z.state==='wait' ? z.timer+P.shrink*.45 : z.timer*.45;
+  const P=PHASES[z.phase], left=z.state==='wait' ? z.timer+P.shrink*G.zs*.45 : z.timer*.45;
   return dn/(BOAT_MAXS*.55)+25 > left;
 }
 // the closest spot well inside the next ring
@@ -1035,6 +1052,8 @@ function syncOnBoat(p){ if(!p.onBoat) return; const w=toWorld(boatOf(p),p.lx,p.l
 const DIVE_T=5;
 function personH(p){
   const j=p.jh||0;
+  if(p.mcl && p.onBoat){ const k=clamp(p.mcl.t/MCLIMB_T,0,1), e=k*k*(3-2*k), a=p.mcl.up?DECK:NEST.y, z=p.mcl.up?NEST.y:DECK; return a+(z-a)*e+boatY(boatOf(p)); }
+  if(p.nest && p.onBoat) return NEST.y+boatY(boatOf(p))+j;
   if(p.climb){ const b=G.teams[p.climb.bt].boat, k=Math.min(1,p.climb.t/CLIMB_TIME); return -3+(DECK+boatY(b)+3)*(k*k*(3-2*k)); }
   if(p.onBoat){ const b=boatOf(p); return (p.deck===0?DECK:onStairs(p)?stairH(p.lx):FLOOR)+boatY(b)+j; }
   const th=terrainH(p.x,p.y);
@@ -1165,6 +1184,7 @@ function giveItem(team, p, it){
 }
 // a treasure chest bursts open into a ring of loot: good guns, ammo, bandages, armour, wood, cannonballs
 function openChest(it, p){
+  if(it.gold) return openGoldChest(it,p);
   const kinds=['gun','gun','ammo','ammo','med','armor','wood','cannon'];
   if(Math.random()<.5) kinds.push('gun');
   if(Math.random()<.2) kinds.push('heavy');
@@ -1180,6 +1200,21 @@ function openChest(it, p){
   });
   fxBurst(it.x,it.y,34,0xffd36a,150,10,1.2,{h:terrainH(it.x,it.y)+12,up:170,g:220});
   if(p) say(p,'Đã mở hòm kho báu: nhặt đồ rơi xung quanh!');
+}
+// epic or legendary only, plus a heavy bow cannon, upgrades and supplies
+function openGoldChest(it, p){
+  const kinds=['gun','gun','gun','blade','upg','upg','heavy','armor','med','med','ammo','ammo','bomb'];
+  const top=()=>Math.random()<.5?4:3;
+  kinds.forEach((type,i)=>{
+    const a=i/kinds.length*Math.PI*2+rand(-.15,.15), r=rand(50,100);
+    const o={x:it.x+Math.cos(a)*r, y:it.y+Math.sin(a)*r, type, float:false, isl:it.isl, bob:rand(0,6.3)};
+    if(type==='gun') o.gun=rollGun(top());
+    if(type==='blade') o.blade=rollBlade(top());
+    if(type==='upg') o.up=rollUpg();
+    unstick(o,18); G.items.push(o);
+  });
+  fxBurst(it.x,it.y,60,0xffb52e,220,12,1.6,{h:terrainH(it.x,it.y)+14,up:240,g:220});
+  if(p){ say(p,'Mở HÒM KHO BÁU XỊN: toàn đồ Sử thi và Huyền thoại!'); sayAll((p.human?p.name:'Một đội')+' vừa mở hòm kho báu xịn'); }
 }
 function nearChest(p){ let best=null, bd=60; for(const it of G.items){ if(it.type!=='chest') continue; const d=dist(p.x,p.y,it.x,it.y); if(d<bd){ bd=d; best=it; } } return best; }
 
@@ -1449,7 +1484,7 @@ function killPerson(p, src){
   const h=personH(p);
   // everything picked up falls where the person dropped; sword and starting pistol stay with them
   dropLoot(p);
-  p.jh=p.jv=0; p.climb=null; p.winch=false; p.rl=0;
+  p.jh=p.jv=0; p.climb=null; p.winch=false; p.rl=0; p.nest=false; p.mcl=null;
   p.alive=false; p.hp=0; p.onBoat=false; p.bt=p.team; p.task=null; p.raid=null; p.helm=false; p.carry=null; p.job=null; p.bailing=false; p.patch=null; p.man=null;
   p.respawnAt=G.t+RESPAWN;
   if(bladeScore(p.blade)>0 && !p.onBoat && terrainH(p.x,p.y)>0){ const is=G.islands.find(q=>dist(q.x,q.y,p.x,p.y)<q.r*1.1); G.items.push({x:p.x+rand(-12,12), y:p.y+rand(-12,12), type:'blade', blade:p.blade, float:false, isl:is, bob:rand(0,6.3)}); }
@@ -1477,7 +1512,7 @@ function sinkBoat(b){
   team.place=teamsAlive()+1;
   for(const c of team.crew){ c.alive=false; c.respawnAt=Infinity; c.onBoat=false; }
   // boarders from other teams fall into the sea
-  for(const q of G.people) if(q.alive && q.onBoat && q.bt===b.team){ q.onBoat=false; q.bt=q.team; q.raid=null; q.task=null; }
+  for(const q of G.people) if(q.alive && q.onBoat && q.bt===b.team){ q.onBoat=false; q.nest=false; q.mcl=null; q.bt=q.team; q.raid=null; q.task=null; }
   const src = b.lastHit && G.t-b.lastHit.t<45 ? b.lastHit.team : null;
   explode(b.x,b.y,DECK,true);
   // everything aboard spills into the sea in floating bundles
@@ -1842,7 +1877,7 @@ function climbTick(p, dt){
   if(c.t>=CLIMB_TIME){ p.climb=null; finishClimb(p,b,c.side); say(p, b.team===p.team?'Đã lên tàu':'Đã lên tàu '+G.teams[b.team].name+'! Hạ thủy thủ bằng kiếm'); }
 }
 function finishClimb(p, b, side){
-  p.onBoat=true; p.bt=b.team; p.deck=0; p.helm=false; p.task=null; p.lx=LADDER_X; p.ly=side*(halfW(LADDER_X)*.92-14); clampDeck(p); syncOnBoat(p);
+  p.onBoat=true; p.nest=false; p.mcl=null; p.bt=b.team; p.deck=0; p.helm=false; p.task=null; p.lx=LADDER_X; p.ly=side*(halfW(LADDER_X)*.92-14); clampDeck(p); syncOnBoat(p);
   fxBurst(p.x,p.y,6,0xe8f4ef,30,4,.4,{h:DECK});
 }
 function tryBoardOwn(p){
@@ -1863,7 +1898,7 @@ function portalHome(p){
   if(!b.alive || !p.alive) return false;
   if(G.t<(p.tpT||0)){ say(p,'Cổng đang hồi, chờ '+Math.ceil(p.tpT-G.t)+' giây'); return false; }
   fxBurst(p.x,p.y,16,0x8ff0ff,120,6,.6,{h:personH(p)+12,up:60});
-  p.onBoat=true; p.bt=p.team; p.deck=0; p.helm=false; p.man=null; p.patch=null; p.winch=false; p.task=null; p.raid=null; p.climb=null; p.jh=p.jv=0;
+  p.onBoat=true; p.nest=false; p.mcl=null; p.bt=p.team; p.deck=0; p.helm=false; p.man=null; p.patch=null; p.winch=false; p.task=null; p.raid=null; p.climb=null; p.jh=p.jv=0;
   p.lx=-100+rand(-20,20); p.ly=rand(-20,20); clampDeck(p); syncOnBoat(p); setCam(p,b.ang);
   p.tpT=G.t+PORTAL_CD;
   fxBurst(p.x,p.y,16,0x8ff0ff,120,6,.6,{h:DECK+boatY(b)+12,up:60});
@@ -1871,6 +1906,8 @@ function portalHome(p){
   return true;
 }
 function atRail(p,I){
+  if(p.mcl) return false;
+  if(p.nest) return Math.hypot(p.lx-NEST.x,p.ly)>NEST.r-5;
   const w=halfW(p.lx)*.92-8, edge=Math.abs(p.ly)>w-22 || p.lx<-160 || p.lx>170;
   if(!edge) return false;
   // not when walking away from the rail
@@ -1878,7 +1915,24 @@ function atRail(p,I){
   const ly=-mx*Math.sin(ob.ang)+my*Math.cos(ob.ang);
   return !(Math.hypot(mx,my)>.2 && Math.abs(p.ly)>w-22 && Math.sign(ly)!==Math.sign(p.ly));
 }
+function startMast(p,up){
+  p.mcl={up, t:0}; p.lx=MFOOT[0]; p.ly=0; p.jh=p.jv=0; p.bailing=false; p.carry=null; p.winch=false;
+  if(!up){ p.nest=false; }
+  sndAt('swing',p.x,p.y,.2);
+}
+function tickMast(p,dt){
+  if(!p.onBoat || !p.alive){ p.mcl=null; p.nest=false; return; }
+  const b=boatOf(p); p.aim=b.ang; p.lx=MFOOT[0]; p.ly=0;
+  p.mcl.t+=dt;
+  if(p.mcl.t>=MCLIMB_T){
+    if(p.mcl.up){ p.nest=true; p.lx=NEST.x-14; p.ly=0; if(p.human) say(p,'Đã lên chòi gác: nhìn xa, bắn từ trên cao. Tương tác để leo xuống, nhảy ở mép chòi là xuống biển'); }
+    else { p.nest=false; p.lx=MFOOT[0]; p.ly=0; }
+    p.mcl=null;
+  }
+  syncOnBoat(p);
+}
 function jumpOff(p){
+  p.nest=false; p.mcl=null;
   const b=boatOf(p), side=p.ly>=0?1:-1;
   const lx=clamp(p.lx,-150,150), w=toWorld(b,lx, side*(halfW(lx)+38));
   p.onBoat=false; p.bt=p.team; p.helm=false; p.man=null; p.carry=null; p.bailing=false; p.patch=null; p.winch=false; p.x=w.x; p.y=w.y;
@@ -2496,6 +2550,9 @@ function interact(p, doIt){
     if(b.alive && nearHull(b,p.x,p.y,60)) return 'Bơi tới chân thang giữa thân tàu để leo lên';
     return null;
   }
+  if(p.mcl) return null;
+  if(p.nest){ if(doIt) startMast(p,false); return 'Leo xuống boong'; }
+  if(p.deck===0 && !p.helm && !p.man && !p.patch && !p.winch && !p.carry && near(p,MFOOT,24)){ if(doIt) startMast(p,true); return 'Leo lên chòi gác'; }
   if(p.bt!==p.team){
     const t=G.teams[p.bt], b=t.boat;
     if(p.deck!==1 || !b.alive) return null;
@@ -2585,8 +2642,8 @@ function walkPerson(p, I, dt){
     const ob=boatOf(p), c=Math.cos(ob.ang), s=Math.sin(ob.ang), sp=deckSpeed(p)*dt*k/Math.max(1,m);
     const dlx=(mx*c+my*s)*sp;
     p.lx+=dlx; p.ly+=(-mx*s+my*c)*sp; p.walk+=dt*10; const ly0=p.ly; clampDeck(p);
-    if(p.deck===0 && p.jh>6 && p.human && Math.abs(ly0)>Math.abs(p.ly)+.5 && !p.helm && !p.man){ jumpOff(p); say(p,landAt(p.x,p.y)?'Đã lên đảo':'Bạn đang bơi, di chuyển chậm'); return true; }
-    if(p.bt===p.team || p.deck===1) stairTransit(p,dlx);
+    if(p.deck===0 && !p.nest && p.jh>6 && p.human && Math.abs(ly0)>Math.abs(p.ly)+.5 && !p.helm && !p.man){ jumpOff(p); say(p,landAt(p.x,p.y)?'Đã lên đảo':'Bạn đang bơi, di chuyển chậm'); return true; }
+    if((p.bt===p.team || p.deck===1) && !p.nest) stairTransit(p,dlx);
     syncOnBoat(p);
   } else movePerson(p, mx/Math.max(1,m), my/Math.max(1,m), dt*k, !p.ads && (I.sprint||(I.stick&&m>.95)));
   return true;
@@ -2594,6 +2651,7 @@ function walkPerson(p, I, dt){
 function playerUpdate(p, dt, I){
   p.touch=I.touch; p.fh=!!I.fire; p.ads=!!I.ads && p.wield==='gun' && !!p.gun;
   if(p.climb) return;
+  if(p.mcl){ tickMast(p,dt); return; }
   const team=G.teams[p.team], b=team.boat;
   const fx=Math.cos(I.yaw), fy=Math.sin(I.yaw), rx=-fy, ry=fx, f=I.f, r=I.r;
   p.aim=I.yaw;
@@ -2694,7 +2752,7 @@ function update(dt){
     const team=G.teams[p.team];
     if(!p.alive){
       if(team.alive && team.boat.alive && G.t>=p.respawnAt){
-        p.alive=true; p.hp=100; p.onBoat=true; p.bt=p.team; p.deck=0; p.cd=0; p.carry=null; p.job=null; p.raid=null; p.wield='sword';
+        p.alive=true; p.hp=100; p.onBoat=true; p.nest=false; p.mcl=null; p.bt=p.team; p.deck=0; p.cd=0; p.carry=null; p.job=null; p.raid=null; p.wield='sword';
         if(p.human && !team.crew.some(c=>c!==p && c.human && c.alive && c.helm)){ p.helm=true; p.lx=HELM[0]; p.ly=HELM[1]; }
         else { const s=GSLOTS[p.gslot%GSLOTS.length]; p.lx=s[0]; p.ly=s[1]; }
         if(p.human){ setCam(p,team.boat.ang); say(p,'Đã hồi sinh về tàu'); }
@@ -2895,8 +2953,8 @@ const Scene3D = {
     const deckShape=hullShape(.97);
     { const hp=new THREE.Path(); hp.moveTo(HATCH[0]-17,-14); hp.lineTo(HATCH[0]+17,-14); hp.lineTo(HATCH[0]+17,14); hp.lineTo(HATCH[0]-17,14); hp.closePath(); deckShape.holes.push(hp); }
     // one merged ladder: two rails and rungs, from the waterline to the rail
-    function ladderGeo(){
-      const parts=[], H=RAIL+6;
+    function ladderGeo(H0){
+      const parts=[], H=H0||RAIL+6;
       const add=(g,x,y,z)=>{ g.translate(x,y,z); parts.push(g); };
       add(new THREE.BoxGeometry(2,H,2),-9,H/2-6,0); add(new THREE.BoxGeometry(2,H,2),9,H/2-6,0);
       for(let y=-2;y<H-6;y+=7) add(new THREE.BoxGeometry(18,1.5,2),0,y,0);
@@ -2912,7 +2970,7 @@ const Scene3D = {
       cannon:new THREE.CylinderGeometry(4,5,26,10).rotateX(Math.PI/2), bowGun:new THREE.CylinderGeometry(5,6,30,10).rotateZ(Math.PI/2),
       capDrum:new THREE.CylinderGeometry(6,7,16,10), capBar:new THREE.BoxGeometry(36,2,2), ancShank:new THREE.CylinderGeometry(1.4,1.4,24,6), ancArm:new THREE.BoxGeometry(12,2.4,2.4), chain:new THREE.CylinderGeometry(.7,.7,1,4).translate(0,-.5,0),
       wheel:new THREE.TorusGeometry(9,1.2,6,16).rotateY(Math.PI/2), post:new THREE.BoxGeometry(3,12,3),
-      stairs:new THREE.BoxGeometry(Math.hypot(STAIR.x1-STAIR.x0,DECK-FLOOR)+4,2.5,26), pillar:new THREE.CylinderGeometry(2.5,2.5,DECK-FLOOR,6), ladder:ladderGeo(),
+      stairs:new THREE.BoxGeometry(Math.hypot(STAIR.x1-STAIR.x0,DECK-FLOOR)+4,2.5,26), pillar:new THREE.CylinderGeometry(2.5,2.5,DECK-FLOOR,6), ladder:ladderGeo(), mastLadder:ladderGeo(NEST.y-DECK-4),
       body:new THREE.CylinderGeometry(3.6,4.4,11,8), head:new THREE.SphereGeometry(3.4,10,8), carried:new THREE.BoxGeometry(4,2,26),
       blade:new THREE.BoxGeometry(14,.8,1.6), hilt:new THREE.BoxGeometry(3,1.4,4), gun:new THREE.BoxGeometry(1,2,2),
       trunk:new THREE.CylinderGeometry(1.4,2.4,34,6), leaf:new THREE.ConeGeometry(16,7,7), rock:new THREE.DodecahedronGeometry(14,0),
@@ -2964,6 +3022,7 @@ const Scene3D = {
         if(PG.cannon){ const c=new THREE.Mesh(PG.cannon,M.prop); c.position.set(x,DECK+.47*PG.cs,sd*(halfW(x)-15)); c.rotation.y=sd*Math.PI/2; g.add(c); }
         else { const c=new THREE.Mesh(GEO.cannon,M.dark); c.position.set(x,DECK+6,sd*(halfW(x)-4)); g.add(c); } }
       for(const sd of [-1,1]){ const l=new THREE.Mesh(GEO.ladder,M.rope); l.position.set(LADDER_X,0,sd*(halfW(LADDER_X)+2.5)); g.add(l); }
+      if(GEO.ship){ const ml=new THREE.Mesh(GEO.mastLadder,M.rope); ml.position.set(MAST_X-8,DECK+6,0); ml.rotation.y=Math.PI/2; g.add(ml); }
       const bow=PG.cannon?new THREE.Mesh(PG.cannon,M.prop):new THREE.Mesh(GEO.bowGun,M.bow); bow.visible=false; g.add(bow);
       if(PG.cannon){ bow.position.set(178,DECK+.47*PG.cs,0); bow.rotation.y=Math.PI; bow.scale.setScalar(1.15); } else bow.position.set(196,DECK+6,0);
       const wheel=new THREE.Mesh(GEO.wheel,M.trunk); wheel.position.set(HELM[0]+10,DECK+16,0); g.add(wheel);
@@ -3255,7 +3314,7 @@ const Scene3D = {
       else if(ud.pbt===-1){ vx=(p.x-ud.px)/dt; vy=(p.y-ud.py)/dt; }
     }
     ud.plx=p.lx; ud.ply=p.ly; ud.px=p.x; ud.py=p.y; ud.pbt=p.onBoat?p.bt:-1;
-    let sp=Math.hypot(vx,vy); if(sp>600 || p.climb) sp=0;
+    let sp=Math.hypot(vx,vy); if(sp>600 || p.climb || p.mcl) sp=0;
     ud.sp=dt>0 ? (ud.sp||0)+(sp-(ud.sp||0))*Math.min(1,dt*12) : (ud.sp||0);
     const moving=ud.sp>22;
     if(moving && sp>22) ud.mdir=Math.atan2(vy,vx);
@@ -3270,12 +3329,12 @@ const Scene3D = {
     const want = moving && !combat && ud.mdir!==undefined ? ud.mdir : p.aim;
     ud.face = ud.face===undefined ? want : ud.face+angDiff(ud.face,want)*Math.min(1,dt*14);
     g.rotation.set(0,-ud.face,0);
-    const busy=p.helm||p.patch||p.bailing||p.man||p.winch||p.climb;
+    const busy=p.helm||p.patch||p.bailing||p.man||p.winch||p.climb||p.mcl;
     const reloading=useGun && p.rl>0;
     const hammering=G.t-(p.hamT||-9)<.6;
     let a, up=null, upForce=false;
     const legs = ud.sp>150 ? 'sprint' : 'run';
-    if(p.climb) a='climb';
+    if(p.climb||p.mcl) a='climb';
     else if(swim && !swimFight) a=moving?'swim':'swimIdle';
     else if(p.jh>0) a = useGun||p.swing>0 ? 'L_jump' : 'jump';
     else if(p.helm) a='rail';
@@ -3441,14 +3500,14 @@ const Scene3D = {
         d.updateMatrix(); m.setMatrixAt(cnt[key]++,d.matrix);
       } else {
         const h=terrainH(it.x,it.y), chest=it.type==='chest';
-        if(chest){ d.position.set(it.x, h-1, it.y); d.rotation.set(0,it.bob,0); }
+        if(chest){ d.position.set(it.x, h-1, it.y); d.rotation.set(0,it.bob,0); if(it.gold) d.scale.setScalar(1.7); }
         else { d.position.set(it.x, h+(it.type==='blade'?20:it.type==='upg'?14:8)+Math.sin(G.t*2.5+it.bob)*1.5, it.y); d.rotation.set(0,G.t*1.5+it.bob,0); }
         d.updateMatrix();
         if(it.type==='gun') m.setColorAt(cnt[key],key==='gun'?R3.rarC[it.gun.rar]:R3.rarI[it.gun.rar]);
         if(it.type==='blade') m.setColorAt(cnt[key],R3.rarI[it.blade.rar]);
         if(it.type==='upg') m.setColorAt(cnt[key],R3.upC[it.up]||R3.brass);
-        m.setMatrixAt(cnt[key]++,d.matrix);
-        const col = it.type==='gun' ? R3.rarC[it.gun.rar] : it.type==='blade' ? R3.rarC[it.blade.rar] : it.type==='upg' ? (R3.upC[it.up]||R3.brass) : it.type==='box' ? R3.boxC : R3.brass;
+        m.setMatrixAt(cnt[key]++,d.matrix); d.scale.setScalar(1);
+        const col = it.gold ? R3.rarC[4] : it.type==='gun' ? R3.rarC[it.gun.rar] : it.type==='blade' ? R3.rarC[it.blade.rar] : it.type==='upg' ? (R3.upC[it.up]||R3.brass) : it.type==='box' ? R3.boxC : R3.brass;
         if(bc<500){ d.position.set(it.x,h+.6,it.y); d.rotation.set(0,0,0); d.updateMatrix(); R3.beacon.setMatrixAt(bc,d.matrix); R3.beacon.setColorAt(bc,col); bc++; }
         if(((it.type==='gun' && it.gun.rar>=2) || (it.type==='blade' && it.blade.rar>=2) || chest || it.type==='box' || it.type==='upg') && pc<300){ d.position.set(it.x,h+45,it.y); d.updateMatrix(); R3.pillar.setMatrixAt(pc,d.matrix); R3.pillar.setColorAt(pc,col); pc++; }
       }
@@ -3621,7 +3680,7 @@ function drawPings(p, compact){
 $('#mapBtn').addEventListener('click',()=>{ bigMap=true; });
 $('#mapShade').addEventListener('click',e=>{
   const r=bigMapRect;
-  if(r && G && G.player.alive && e.clientX>=r.x0 && e.clientX<=r.x0+r.S && e.clientY>=r.y0 && e.clientY<=r.y0+r.S){ pingAt((e.clientX-r.x0)/r.S*WORLD,(e.clientY-r.y0)/r.S*WORLD); return; }
+  if(r && G && G.player.alive && e.clientX>=r.x0 && e.clientX<=r.x0+r.S && e.clientY>=r.y0 && e.clientY<=r.y0+r.S){ pingAt(r.ox+(e.clientX-r.x0)/r.S*r.span,r.oy+(e.clientY-r.y0)/r.S*r.span); return; }
   bigMap=false; if(!invOpen) requestLock();
 });
 function syncMapBtns(){
@@ -3636,8 +3695,8 @@ function syncMapBtns(){
 // whole world, north up: islands, treasure chests, the zone now and next, your ship and you
 function drawBigMap(p,b,Z,narrow){
   ctx.fillStyle='rgba(4,22,29,.9)'; ctx.fillRect(0,0,VW,VH);
-  const S=Math.min(VW-24,VH-(narrow?70:90)), x0=(VW-S)/2, y0=narrow?44:60, k=S/WORLD;
-  const tp=(wx,wy)=>[x0+wx*k,y0+wy*k];
+  const S=Math.min(VW-24,VH-(narrow?70:90)), x0=(VW-S)/2, y0=narrow?44:60, span=WORLD*Math.max(.55,G.mapK||1), mox=CX-span/2, moy=CY-span/2, k=S/span;
+  const tp=(wx,wy)=>[x0+(wx-mox)*k,y0+(wy-moy)*k];
   ctx.save();
   ctx.fillStyle='#0b3d4f'; ctx.fillRect(x0,y0,S,S);
   ctx.beginPath(); ctx.rect(x0,y0,S,S); ctx.clip();
@@ -3650,14 +3709,14 @@ function drawBigMap(p,b,Z,narrow){
     ctx.fillStyle='#7d6a4a'; ctx.beginPath(); ctx.moveTo(ix,iy-r); ctx.lineTo(ix+r,iy+r*.7); ctx.lineTo(ix-r,iy+r*.7); ctx.closePath(); ctx.fill(); }
   ctx.fillStyle='#8f7d5c'; for(const is of G.islands) for(const pk of is.pk||[]){ if(!pk.big) continue; const [ix,iy]=tp(is.x+pk.x,is.y+pk.y), r=Math.max(3,pk.r*.45*k);
     ctx.beginPath(); ctx.moveTo(ix,iy-r); ctx.lineTo(ix+r,iy+r*.7); ctx.lineTo(ix-r,iy+r*.7); ctx.closePath(); ctx.fill(); }
-  ctx.fillStyle='#ffd36a'; for(const it of G.items){ if(it.type!=='chest') continue; const [qx,qy]=tp(it.x,it.y); ctx.fillRect(qx-2,qy-2,4,4); }
+  for(const it of G.items){ if(it.type!=='chest') continue; const [qx,qy]=tp(it.x,it.y); ctx.fillStyle=it.gold?'#ffb52e':'#ffd36a'; const z=it.gold?4:2; ctx.fillRect(qx-z,qy-z,z*2,z*2); }
   for(const it of G.items){ if(it.type!=='upg' || !UPG[it.up] || upLv(G.player.team,it.up)>=UPG_MAX) continue; ctx.fillStyle=UPG[it.up].c; const [qx,qy]=tp(it.x,it.y); ctx.fillRect(qx-1.5,qy-1.5,3,3); }
   ctx.fillStyle='#6fe3ff'; for(const is of G.islands) for(const pt of is.portals||[]){ const [qx,qy]=tp(pt.x,pt.y); ctx.beginPath(); ctx.arc(qx,qy,3.5,0,7); ctx.fill(); }
   ctx.fillStyle='rgba(226,80,60,.18)'; { const [zx,zy]=tp(Z.cx,Z.cy); ctx.beginPath(); ctx.rect(x0,y0,S,S); ctx.moveTo(zx+Z.r*k,zy); ctx.arc(zx,zy,Z.r*k,0,Math.PI*2,true); ctx.fill('evenodd');
     ctx.strokeStyle='#ff6e78'; ctx.lineWidth=2.5; ctx.beginPath(); ctx.arc(zx,zy,Z.r*k,0,7); ctx.stroke(); }
   if(Z.state!=='final'){ ctx.strokeStyle='#e8f4ef'; ctx.lineWidth=2; ctx.setLineDash([6,5]); const [zx,zy]=tp(Z.ncx,Z.ncy); ctx.beginPath(); ctx.arc(zx,zy,Math.max(2,Z.nr*k),0,7); ctx.stroke(); ctx.setLineDash([]); }
   const ox=p.alive?p.x:b.x, oy=p.alive?p.y:b.y;
-  bigMapRect={x0,y0,S};
+  bigMapRect={x0,y0,S,span,ox:mox,oy:moy};
   for(const c of G.teams[p.team].crew){ const pg=livePing(c); if(!pg) continue; const [qx,qy]=tp(pg.x,pg.y); pingMark(qx,qy,7,pingCol(c)); }
   for(const t of G.teams){
     const bb=t.boat; if(!bb.alive) continue;
@@ -3717,7 +3776,7 @@ function drawHUD(){
     if(it.type==='chest'){
       const dd=dist(cp.x,cp.z,it.x,it.y); if(dd>1500) continue;
       const sp=Scene3D.project(it.x,terrainH(it.x,it.y)+42,it.y); if(!sp) continue;
-      ctx.font='800 12px '+FONT_B; ctx.textAlign='center'; ctx.fillStyle='#ffd36a'; ctx.fillText('HÒM KHO BÁU',sp.x,sp.y); continue;
+      ctx.font='800 '+(it.gold?14:12)+'px '+FONT_B; ctx.textAlign='center'; ctx.fillStyle=it.gold?'#ffb52e':'#ffd36a'; ctx.fillText(it.gold?'HÒM KHO BÁU XỊN':'HÒM KHO BÁU',sp.x,sp.y); continue;
     }
     if(it.type==='upg' && UPG[it.up]){
       const dd=dist(cp.x,cp.z,it.x,it.y); if(dd>1200) continue;
@@ -3831,7 +3890,7 @@ function drawHUD(){
   ctx.translate(mcx,mcy); ctx.rotate(-cam.yaw-Math.PI/2);
   const tp=(wx,wy)=>[(wx-ox)*scale,(wy-oy)*scale];
   ctx.fillStyle='#e2c58c'; for(const is of G.islands){ const [ix,iy]=tp(is.x,is.y); ctx.beginPath(); ctx.arc(ix,iy,Math.max(2,is.r*scale),0,7); ctx.fill(); }
-  ctx.fillStyle='#ffd36a'; for(const it of G.items){ if(it.type!=='chest') continue; const [qx,qy]=tp(it.x,it.y); if(qx*qx+qy*qy<R*R) ctx.fillRect(qx-1.5,qy-1.5,3,3); }
+  for(const it of G.items){ if(it.type!=='chest') continue; const [qx,qy]=tp(it.x,it.y); if(qx*qx+qy*qy<R*R){ ctx.fillStyle=it.gold?'#ffb52e':'#ffd36a'; const z=it.gold?2.5:1.5; ctx.fillRect(qx-z,qy-z,z*2,z*2); } }
   for(const it of G.items){ if(it.type!=='upg' || !UPG[it.up] || upLv(G.player.team,it.up)>=UPG_MAX) continue; const [qx,qy]=tp(it.x,it.y); if(qx*qx+qy*qy<R*R){ ctx.fillStyle=UPG[it.up].c; ctx.fillRect(qx-1,qy-1,2.5,2.5); } }
   ctx.fillStyle='#6fe3ff'; for(const is of G.islands) for(const pt of is.portals||[]){ const [qx,qy]=tp(pt.x,pt.y); if(qx*qx+qy*qy<R*R){ ctx.beginPath(); ctx.arc(qx,qy,2.5,0,7); ctx.fill(); } }
   ctx.strokeStyle='#ff6e78'; ctx.lineWidth=2; { const [zx,zy]=tp(Z.cx,Z.cy); ctx.beginPath(); ctx.arc(zx,zy,Z.r*scale,0,7); ctx.stroke(); }
@@ -3931,13 +3990,13 @@ function packBoats(){
 }
 function packPeople(){
   return G.people.map(p=>{
-    const fl=(p.alive?1:0)|(p.onBoat?2:0)|(p.deck?4:0)|(p.carry?8:0)|(p.helm?16:0)|(p.winch?32:0)|(p.bailing?64:0)|(p.patch?128:0)|(p.fh?256:0)|(p.human?512:0);
+    const fl=(p.alive?1:0)|(p.onBoat?2:0)|(p.deck?4:0)|(p.carry?8:0)|(p.helm?16:0)|(p.winch?32:0)|(p.bailing?64:0)|(p.patch?128:0)|(p.fh?256:0)|(p.human?512:0)|(p.nest?1024:0);
     return [fl,Math.round(p.x),Math.round(p.y),Math.round(p.lx*10),Math.round(p.ly*10),Math.round(Math.atan2(Math.sin(p.aim),Math.cos(p.aim))*100),Math.ceil(p.hp),Math.ceil(p.armor),
       WLD.indexOf(p.wield),p.gun?GUNK.indexOf(p.gun.type)*8+p.gun.rar:-1,p.gun?gunMag(p.gun):0,p.ammo,p.swN||0,p.shN||0,Math.round((p.rl||0)*10),Math.round((p.rlDur||0)*10),
       p.man?(p.man.side+1)*10+p.man.i:-1, p.climb?[p.climb.bt,p.climb.side,Math.round(p.climb.t*100)]:0, Math.round((p.jh||0)*10), isFinite(p.respawnAt)?Math.round(p.respawnAt*10):-1,
       p.hamN||0, JOBK.indexOf(p.job), p.bt, p.kills||0,
       p.bag.cannon, p.bag.wood, p.bag.med, p.guns.map(g=>g.base?-2:GUNK.indexOf(g.type)*8+g.rar), p.gun&&p.gun.base?1:0,
-      p.ping && G.t-p.ping.t<PING_LIFE ? [Math.round(p.ping.x),Math.round(p.ping.y),Math.round((G.t-p.ping.t)*10)] : 0, p.bag.bomb||0, Math.round((p.dive||0)*10), Math.round((p.air??1)*100), p.blade?BLK.indexOf(p.blade.type)*8+p.blade.rar:0];
+      p.ping && G.t-p.ping.t<PING_LIFE ? [Math.round(p.ping.x),Math.round(p.ping.y),Math.round((G.t-p.ping.t)*10)] : 0, p.bag.bomb||0, Math.round((p.dive||0)*10), Math.round((p.air??1)*100), p.blade?BLK.indexOf(p.blade.type)*8+p.blade.rar:0, p.mcl?(p.mcl.up?1:-1)*(1+Math.round(p.mcl.t*10)):0];
   });
 }
 NET.hostPre=function(){
@@ -4007,7 +4066,7 @@ NET.hostTick=function(dt){
   if(this.itemsT<=0){
     this.itemsT=.45;
     const flat=[];
-    for(const it of G.items) flat.push(ITK.indexOf(it.type)+(it.float?16:0), Math.round(it.x), Math.round(it.y), it.type==='upg'?UPK.indexOf(it.up):it.gun?GUNK.indexOf(it.gun.type)*8+it.gun.rar:it.blade?BLK.indexOf(it.blade.type)*8+it.blade.rar:-1);
+    for(const it of G.items) flat.push(ITK.indexOf(it.type)+(it.float?16:0), Math.round(it.x), Math.round(it.y), it.type==='upg'?UPK.indexOf(it.up):it.type==='chest'?(it.gold?1:-1):it.gun?GUNK.indexOf(it.gun.type)*8+it.gun.rar:it.blade?BLK.indexOf(it.blade.type)*8+it.blade.rar:-1);
     for(let k=0;k<4;k++){ const part=flat.slice(k*1000,(k+1)*1000), st=JSON.stringify(part); if(st!==this.itemsS[k]){ this.itemsS[k]=st; setP(R['i'+k],{g:gen, it:part}); } }
   }
 };
@@ -4049,7 +4108,8 @@ function applyPeople(arr,k0,ht){
     const fl=N(a[0]), alive=!!(fl&1), on=!!(fl&2), deck=fl&4?1:0, bt=clamp(N(a[22])|0,0,G.teams.length-1);
     const changed=p.sOn!==on || p.sBt!==bt || p.sDeck!==deck || p.sAlive!==alive;
     p.sOn=on; p.sBt=bt; p.sDeck=deck; p.sAlive=alive;
-    p.alive=alive; p.carry=fl&8?'wood':null; p.helm=!!(fl&16); p.winch=!!(fl&32); p.bailing=!!(fl&64); p.patch=fl&128?(p.patch||{}):null; p.fh=!!(fl&256); p.human=!!(fl&512);
+    p.alive=alive; p.carry=fl&8?'wood':null; p.helm=!!(fl&16); p.winch=!!(fl&32); p.bailing=!!(fl&64); p.patch=fl&128?(p.patch||{}):null; p.fh=!!(fl&256); p.human=!!(fl&512); p.nest=!!(fl&1024);
+    { const mc=N(a[34]); p.mcl = mc ? {up:mc>0, t:(Math.abs(mc)-1)/10} : null; }
     { // speed between the last two updates, so the client can keep them moving until the next one
       const nx=N(a[1]), ny=N(a[2]), nlx=N(a[3])/10, nly=N(a[4])/10, now=performance.now(), gap=(now-(p.rT||0))/1000;
       if(p.rT && gap>.03 && gap<.6 && !changed){
@@ -4082,7 +4142,7 @@ function applyPeople(arr,k0,ht){
     { const bc=N(a[33]); const bt=BLK[bc>>3]||'cutlass', br=clamp(bc&7,0,RAR.length-1); if(!p.blade || p.blade.type!==bt || p.blade.rar!==br) p.blade={type:bt, rar:br}; }
     { const pg=a[29]; p.ping=Array.isArray(pg)?{x:N(pg[0]), y:N(pg[1]), t:G.t-N(pg[2])/10}:(p===G.player&&p.ping&&G.t-p.ping.t<.8?p.ping:null); }
     // this viewer walks ahead of the host on their own screen; the host's word wins when it disagrees for long
-    const pred = p===G.player && alive && !p.helm && !p.man && !p.winch && !p.climb && !p.patch;
+    const pred = p===G.player && alive && !p.helm && !p.man && !p.winch && !p.climb && !p.patch && !p.mcl;
     if(!pred){ p.onBoat=on; p.bt=bt; p.deck=deck; p.misT=0; if(changed) snapPerson(p); return; }
     const mism = p.onBoat!==on || p.bt!==bt || p.deck!==deck;
     if(changed || (mism && p.misT && G.t-p.misT>.7)){ p.onBoat=on; p.bt=bt; p.deck=deck; p.misT=0; snapPerson(p); }
@@ -4139,6 +4199,7 @@ function applyItems(){
     const x=N(arr[i+1]), y=N(arr[i+2]), gc=N(arr[i+3]);
     const it={x, y, type, float:!!(N(arr[i])&16), bob:((Math.abs(x)*13+Math.abs(y)*7)%628)/100};
     if(type==='upg'){ if(UPK[gc]) it.up=UPK[gc]; else continue; }
+    else if(type==='chest'){ if(gc===1) it.gold=true; }
     else if(type==='blade'){ if(gc>=0 && BLK[gc>>3]) it.blade={type:BLK[gc>>3], rar:clamp(gc&7,0,RAR.length-1)}; else continue; }
     else if(gc>=0 && GUNK[gc>>3]) it.gun={type:GUNK[gc>>3], rar:clamp(gc&7,0,RAR.length-1)}; else if(type==='gun') continue;
     out.push(it);
@@ -4250,6 +4311,7 @@ function clientUpdate(dt){
   for(const p of G.people){
     p.swing=Math.max(0,p.swing-dt); if(p.rl>0) p.rl=Math.max(0,p.rl-dt);
     if(p.climb) p.climb.t=Math.min(CLIMB_TIME,p.climb.t+dt);
+    if(p.mcl) p.mcl.t=Math.min(MCLIMB_T,p.mcl.t+dt);
     if(!p.alive || p.tx===undefined || (p===me && pred)) continue;
     if(playBack(p,dt)) continue;
     if(p.rT && performance.now()-p.rT<400){ p.tx+=(p.rvx||0)*dt; p.ty+=(p.rvy||0)*dt; p.tlx+=(p.rvlx||0)*dt; p.tly+=(p.rvly||0)*dt; }
@@ -4316,7 +4378,7 @@ async function netOpen(code, asHost){
   $('#menu').hidden=true;
   renderLobby();
 }
-NET.lobbyPresence=function(){ if(this.rooms) setP(this.rooms.m,{h:1, nick:this.nick, s:this.myShip, g:{gen:this.gen, st:0, mode:this.cfg.mode, crew:this.cfg.mode==='team'?this.cfg.crew:setup.crew, diff:setup.diff}, t:null, ov:null, z:null, b:null, pp:null}); };
+NET.lobbyPresence=function(){ if(this.rooms) setP(this.rooms.m,{h:1, nick:this.nick, s:this.myShip, g:{gen:this.gen, st:0, mode:this.cfg.mode, crew:this.cfg.mode==='team'?this.cfg.crew:setup.crew, diff:setup.diff, map:setup.map, zs:setup.zs}, t:null, ov:null, z:null, b:null, pp:null}); };
 NET.leave=function(){
   VOICE.stop();
   const R=this.rooms; this.rooms=null;
@@ -4363,7 +4425,7 @@ function clientStart(g,pid){
   const hum=g.hum.filter(Array.isArray).map(h=>({team:Math.floor(N(h[0])/crew), slot:N(h[0])%crew, nick:cleanNick(h[2])||'Khách', peer:h[1]}));
   Object.assign(NET,{gen:g.gen, evSeq:-1, first:true, pres:{}, itemsA:[[],[],[],[]], humS:'', moving:false, prevAng:undefined});
   $('#end').hidden=true;
-  beginGame({seed:N(g.seed)|0, crew, diff:DIFF[g.diff]?g.diff:'normal', net:true, hum, me:clamp(N(pid)|0,0,crew*TEAMS.length-1), mode:g.mode});
+  beginGame({seed:N(g.seed)|0, crew, diff:DIFF[g.diff]?g.diff:'normal', map:g.map, zs:g.zs, net:true, hum, me:clamp(N(pid)|0,0,crew*TEAMS.length-1), mode:g.mode});
   G.items=[];
 }
 NET.startMatch=function(){
@@ -4373,9 +4435,9 @@ NET.startMatch=function(){
     : pl.map((x,i)=>mode==='coop' ? {team:0, slot:i, nick:x.nick, peer:x.peer} : {team:i, slot:0, nick:x.nick, peer:x.peer});
   this.gen=1+Math.floor(Math.random()*1e9);
   const seed=Math.floor(Math.random()*1e9);
-  this.g={gen:this.gen, st:1, mode, crew, diff:setup.diff, seed, hum:hum.map(h=>[h.team*crew+h.slot, h.peer, h.nick])};
+  this.g={gen:this.gen, st:1, mode, crew, diff:setup.diff, map:setup.map, zs:setup.zs, seed, hum:hum.map(h=>[h.team*crew+h.slot, h.peer, h.nick])};
   Object.assign(this,{evq:[], lastE:'', itemsS:['','','',''], itemsT:0, sendT:0, acts:{}, full:new Set(), checkT:30});
-  beginGame({seed, crew, diff:setup.diff, net:true, hum, me:hum.length?hum[0].team*crew+hum[0].slot:0, mode});
+  beginGame({seed, crew, diff:setup.diff, map:setup.map, zs:setup.zs, net:true, hum, me:hum.length?hum[0].team*crew+hum[0].slot:0, mode});
 };
 // each player sits on the ship they picked; a full ship sends the extra player to the next ship with room
 function teamSeats(pl,crew){
@@ -4405,13 +4467,13 @@ function renderLobby(){
     li.append(b,sm); return li;
   }));
   for(const btn of $('#segMode').querySelectorAll('button')){ btn.setAttribute('aria-pressed', btn.dataset.v===(g.mode||'coop')?'true':'false'); btn.disabled=!host; }
-  $('#lobStart').hidden=!host;
+  $('#lobStart').hidden=!host; segOptSync(host?null:g);
   const n=Math.min(cap,pl.length), crew=N(g.crew)||3, dn=DIFFN[g.diff]||'Thường';
   const how = g.mode==='team' ? 'Mỗi tàu '+tcrew+' người: ai chọn cùng số tàu là chung đội, bắn các tàu khác; chỗ trống và '+(TEAMS.length-6)+' tàu còn lại do máy chơi, độ khó '+dn+'.'
     : (g.mode||'coop')==='coop' ? 'Cả nhóm chung tàu Kim Ưng ('+Math.max(crew,n)+' người, máy điền chỗ trống), đấu với '+(TEAMS.length-1)+' tàu máy độ khó '+dn+'.'
                                : 'Mỗi người cầm một tàu riêng ('+crew+' người mỗi tàu, đồng đội là máy), '+TEAMS.length+' tàu mỗi trận, tàu không có người do máy lái, độ khó '+dn+'.';
   $('#lobInfo').textContent = !host && !NET.hostSeen ? 'Đang tìm chủ phòng '+NET.code+'…'
-    : how+' '+(host ? (n>1 ? 'Bấm Bắt đầu khi mọi người đã vào.' : 'Gửi mã phòng cho bạn bè; bấm Bắt đầu để chơi ngay, người vào sau sẽ được nhận một thủy thủ.')
+    : how+' Bản đồ '+(({'0.5':'nhỏ','0.75':'vừa','1':'lớn'})[String(g.map??setup.map)]||'lớn')+', bo thu '+(({'1.6':'chậm','1':'thường','0.6':'nhanh','0.35':'rất nhanh'})[String(g.zs??setup.zs)]||'thường')+'. '+(host ? (n>1 ? 'Bấm Bắt đầu khi mọi người đã vào.' : 'Gửi mã phòng cho bạn bè; bấm Bắt đầu để chơi ngay, người vào sau sẽ được nhận một thủy thủ.')
                     : g.st ? 'Trận đang diễn ra, chờ chủ phòng xếp chỗ hoặc mở trận mới.' : 'Chờ chủ phòng bấm Bắt đầu.');
 }
 $('#nick').value=(()=>{ try{ return localStorage.getItem('hcb-nick')||''; }catch(_){ return ''; } })() || 'Thủy thủ '+(10+Math.floor(Math.random()*90));
@@ -4473,6 +4535,16 @@ function segInit(id,key){
     setup[key]= key==='crew' ? +btn.dataset.v : btn.dataset.v;
     if(key==='q') Scene3D.resize();
   });
+}
+for(const sg of document.querySelectorAll('.segOpt')) sg.addEventListener('click',e=>{
+  const btn=e.target.closest('button'); if(!btn || btn.disabled) return; const k=sg.dataset.k;
+  if(NET.rooms && NET.mode!=='host') return;
+  setup[k]=btn.dataset.v; segOptSync();
+  if(NET.rooms && NET.mode==='host'){ NET.lobbyPresence(); renderLobby(); }
+});
+function segOptSync(g){
+  for(const sg of document.querySelectorAll('.segOpt')){ const v=String(g&&g[sg.dataset.k]!=null?g[sg.dataset.k]:setup[sg.dataset.k]);
+    for(const b of sg.querySelectorAll('button')){ b.setAttribute('aria-pressed', b.dataset.v===v?'true':'false'); if(sg.closest('#lobby')) b.disabled=!!NET.rooms && NET.mode!=='host'; } }
 }
 segInit('#segCrew','crew'); segInit('#segDiff','diff'); segInit('#segView','view'); segInit('#segQ','q'); segInit('#segTeams','teams');
 $('#s-admin').checked=!!SET.admin; $('#s-admin').addEventListener('change',e=>{ SET.admin=e.target.checked; saveSet(); if(NET.rooms && NET.mode==='client') setP(NET.rooms.m,{ad:ADMIN_OK && SET.admin ? 1 : 0}); });
