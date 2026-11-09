@@ -284,6 +284,53 @@ body.tui #wbar button.on{background:rgba(240,180,76,.3)}
   #menu.lobby .lbPane{max-height:none;overflow:visible}
   .shopGrid{grid-template-columns:repeat(2,1fr)}
 }
+
+/* v46 rank frames and daily missions */
+.rkF{--rc:#e08a4a;border:2px solid var(--rc);background:rgba(4,22,29,.7)}
+.rkF.rk0{--rc:#c0703a}
+.rkF.rk1{--rc:#dfe8ee;border-style:double;border-width:4px}
+.rkF.rk2{--rc:#ffd34d;box-shadow:0 0 10px rgba(255,211,77,.45)}
+.rkF.rk3{border-color:transparent;background:linear-gradient(#0a2a2c,#0a2a2c) padding-box,linear-gradient(135deg,#74f2df,#f2fffd,#1ea595,#74f2df) border-box;box-shadow:0 0 10px rgba(116,242,223,.35)}
+.rkF.rk4{border-color:transparent;border-width:3px;background:linear-gradient(#0c1d3d,#0c1d3d) padding-box,linear-gradient(135deg,#8ccaff,#ffffff,#3c7bff,#b7e2ff) border-box;box-shadow:0 0 14px rgba(140,202,255,.55)}
+.rkF.rk5{border-color:transparent;border-width:3px;background:linear-gradient(#24092f,#24092f) padding-box,linear-gradient(135deg,#e09cff,#ff4f7a,#8a2be2,#e09cff) border-box;animation:rkPulse 1.8s ease-in-out infinite}
+.rkF.rk6{border-color:transparent;border-width:3px;background:linear-gradient(#2a1306,#2a1306) padding-box,linear-gradient(90deg,#ff5f6d,#ffd34d,#7cf0ff,#d48cff,#ff5f6d) border-box;background-size:100% 100%,300% 100%;animation:rkFlow 3s linear infinite,rkGlow 2s ease-in-out infinite}
+@keyframes rkPulse{50%{box-shadow:0 0 18px rgba(224,156,255,.75)}}
+@keyframes rkFlow{to{background-position:0 0,300% 0}}
+@keyframes rkGlow{0%,100%{box-shadow:0 0 10px rgba(255,211,77,.5)}50%{box-shadow:0 0 22px rgba(255,95,109,.8)}}
+.rkE{width:24px;height:24px;flex:none}
+.rkTag{display:inline-flex;align-items:center;gap:4px;padding:1px 8px 1px 3px;border-radius:12px;font:700 12px/1.2 var(--body,system-ui),sans-serif;color:var(--foam);vertical-align:middle;margin-right:6px}
+.rkTag .rkE{width:18px;height:18px}
+#lbRank{display:flex;align-items:center;gap:6px;height:40px;padding:0 14px 0 8px;border-radius:20px;color:var(--foam);font:700 14px/1 var(--body,system-ui),sans-serif;cursor:pointer;white-space:nowrap}
+#lbRank .rkE{width:28px;height:28px}
+#lbDm{position:relative} #lbDm em{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;border-radius:9px;background:#e2503c;color:#fff;font:800 11px/18px var(--body,system-ui),sans-serif;font-style:normal;text-align:center;padding:0 4px}
+#lbDm em[hidden]{display:none}
+#rankP,#dmP{background:rgba(4,22,29,.96);z-index:25}
+#rankP .panel,#dmP .panel{max-width:780px}
+.rankMe{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:6px 0;font-weight:700;color:var(--foam)}
+.rankMe .rkTag{font-size:15px;padding:3px 12px 3px 4px} .rankMe .rkTag .rkE{width:26px;height:26px}
+.rankGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:12px 0}
+.rkCard{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px;border-radius:14px;color:var(--foam);text-align:center}
+.rkCard .rkE{width:54px;height:54px} .rkCard b{font-size:16px} .rkCard small{color:var(--muted);font-size:12px}
+.rkCard.me{outline:2px solid var(--foam);outline-offset:3px}
+.dmList{list-style:none;margin:12px 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.dmRow{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;background:rgba(232,244,239,.07);border:1px solid rgba(232,244,239,.14)}
+.dmRow.got{opacity:.6}
+.dmTxt{flex:1;display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 10px;min-width:0}
+.dmTxt b{color:var(--foam);font-size:15px} .dmTxt small{color:var(--muted);font-weight:700}
+.dmTxt i{grid-column:1/-1;display:block;height:7px;border-radius:4px;background:rgba(232,244,239,.15);overflow:hidden}
+.dmTxt i s{display:block;height:100%;background:linear-gradient(90deg,#f0b44c,#ffd98a)}
+.dmRow button{min-width:92px;height:36px;border-radius:18px;border:1px solid rgba(240,180,76,.45);background:rgba(40,26,4,.6);color:#ffd98a;font:800 14px/1 var(--body,system-ui),sans-serif;cursor:pointer}
+.dmRow button.ready{background:linear-gradient(#ffd34d,#f0a030);color:#2a1500;border-color:#ffd34d;box-shadow:0 0 12px rgba(255,211,77,.5)}
+.dmRow button:disabled:not(.ready){cursor:default;opacity:.7}
+@media (max-height:520px){ #lbRank{height:34px;padding:0 10px 0 6px;font-size:13px} #lbRank .rkE{width:22px;height:22px} .rankGrid{grid-template-columns:repeat(4,1fr);gap:6px} .rkCard{padding:6px} .rkCard .rkE{width:38px;height:38px} .dmRow{padding:6px 10px} }
+@media (orientation:portrait) and (max-width:820px){ #menu.lobby #lbRank{height:34px;padding:0 10px 0 6px;font-size:13px} #menu.lobby #lbRank .rkE{width:22px;height:22px} .rankGrid{grid-template-columns:repeat(2,1fr)} }
+
+#bino{position:fixed;inset:0;z-index:9;pointer-events:none}
+#bino[hidden]{display:none}
+#bino svg{position:absolute;inset:0;width:100%;height:100%}
+#binoTags span{position:absolute;transform:translate(-50%,-100%);padding:3px 8px;border-radius:8px;background:rgba(120,14,10,.78);border:1px solid #ff8a7a;color:#fff;font:700 12px/1.2 var(--body,system-ui),sans-serif;white-space:nowrap}
+#binoTags span b{position:absolute;left:50%;bottom:-9px;width:0;height:0;margin-left:-5px;border:5px solid transparent;border-top-color:#ff8a7a}
+#binoZ{position:absolute;left:50%;bottom:calc(100px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);margin:0;color:#e8f4ef;font:700 13px var(--body,system-ui),sans-serif;text-shadow:0 1px 3px #000}
 </style>
 
 <canvas id="c" aria-label="Trận hải chiến 3D"></canvas>
@@ -363,6 +410,7 @@ body.tui #wbar button.on{background:rgba(240,180,76,.3)}
       <dt>Chuột</dt><dd>Xoay góc nhìn, ngắm (bấm vào màn hình để khóa chuột, Esc để thả)</dd>
       <dt>W A S D · Shift</dt><dd>Lái tàu khi cầm lái; đi lại, bơi khi rời lái. Giữ Shift để chạy nhanh trên đảo</dd>
       <dt>Chuột trái</dt><dd>Chém kiếm hoặc bắn súng (súng chỉ hạ người, không làm thủng tàu)</dd>
+      <dt>4</dt><dd>Ống nhòm: bấm lần 1 phóng x5, lần 2 phóng x10, lần 3 cất đi. Nhìn rất xa, tàu địch hiện tên và khoảng cách</dd>
       <dt>1 · 2 · 3 · lăn chuột</dt><dd>Cầm kiếm · cầm súng · cầm búa · đổi qua lại (hoặc bấm thanh vũ khí dưới màn hình)</dd>
       <dt>R</dt><dd>Thay đạn (mỗi súng có băng đạn riêng, hết băng sẽ tự thay)</dd>
       <dt>Space</dt><dd>Nhảy. Đứng sát mạn tàu rồi nhảy là xuống biển; đang bơi thì nhảy là lặn</dd>
@@ -384,6 +432,7 @@ body.tui #wbar button.on{background:rgba(240,180,76,.3)}
       <li>Biển và đảo rất rộng; cứ 3 phút bo lại thu hẹp một lần.</li>
       <li>Mỗi đảo có vài hòm kho báu (cột sáng vàng, chấm vàng trên bản đồ nhỏ): tới gần nhấn E để mở, bên trong rơi ra nhiều đồ và súng xịn.</li>
       <li>Gần giữa mỗi đảo có hòm kho báu xịn (hòm to, cột sáng cam, chấm cam to trên bản đồ): chỉ ra súng, kiếm Sử thi hoặc Huyền thoại, pháo mũi, nâng cấp tàu.</li>
+      <li>Rank online: Đồng, Bạc, Vàng, Bạch kim, Kim cương, Cao thủ, Thách đấu. Chỉ trận online mới cộng hoặc trừ RP; mỗi rank có khung riêng. Nhiệm vụ ngày (nút Nhiệm vụ ở sảnh) cho thêm vàng để mua nhân vật.</li>
       <li>Hòm nâng cấp (hộp phát sáng): đỏ cam là pháo nạp nhanh, bắn thủng to hơn; xanh lá là thân tàu rò nước chậm hơn; xanh dương là sô múc được nhiều nước hơn; vàng là búa vá ít nhát hơn. Đi qua là nhặt, mỗi loại tối đa cấp 3 cho cả tàu, tàu chìm là mất.</li>
     </ul>
   </div>
@@ -395,6 +444,23 @@ body.tui #wbar button.on{background:rgba(240,180,76,.3)}
     <p class="note">Skin đổi màu mọi khẩu súng bạn cầm. Người chơi cùng phòng online cũng thấy. Vàng và cấp có được sau mỗi trận: hạ gục càng nhiều, trụ càng lâu, thưởng càng lớn.</p>
     <div class="shopGrid" id="shopGrid"></div>
     <div class="row"><button class="go" id="shopClose" type="button">Xong</button></div>
+  </div>
+</div>
+<div class="overlay" id="rankP" hidden>
+  <div class="panel">
+    <div class="shopHead"><p class="endtitle">Rank online</p></div>
+    <p class="rankMe" id="rankMe"></p>
+    <p class="note">Chỉ trận online mới tính rank. Top 1 được +50 RP, top 3 +30, top 5 +20, top 10 +8, mỗi lần hạ gục +4 (tối đa +40). Xếp hạng 11 trở xuống bị trừ RP, từ Kim cương trở lên trừ nặng hơn. Mỗi rank có khung riêng, người cùng phòng đều thấy.</p>
+    <div class="rankGrid" id="rankGrid"></div>
+    <div class="row"><button class="go" id="rankClose" type="button">Xong</button></div>
+  </div>
+</div>
+<div class="overlay" id="dmP" hidden>
+  <div class="panel">
+    <div class="shopHead"><p class="endtitle">Nhiệm vụ ngày</p></div>
+    <p class="note" id="dmReset"></p>
+    <ul class="dmList" id="dmList"></ul>
+    <div class="row"><button class="go" id="dmClose" type="button">Xong</button></div>
   </div>
 </div>
 <div class="overlay" id="help" hidden>
@@ -487,8 +553,13 @@ body.tui #wbar button.on{background:rgba(240,180,76,.3)}
   <button id="w1" type="button"><i>1</i><b>Kiếm</b><span>cận chiến</span></button>
   <button id="w2" type="button"><i>2</i><b>Súng</b><span>chưa có</span></button>
   <button id="w3" type="button"><i>3</i><b>Búa</b><span>vá tàu</span></button>
+  <button id="w4" type="button"><i>4</i><b>Ống nhòm</b><span>nhìn xa</span></button>
 </div>
 
+<div id="bino" hidden><svg viewBox="0 0 160 90" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><mask id="binoM"><rect width="160" height="90" fill="#fff"/><circle cx="62" cy="45" r="37" fill="#000"/><circle cx="98" cy="45" r="37" fill="#000"/></mask>
+<radialGradient id="binoV"><stop offset=".7" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></radialGradient></defs>
+<circle cx="62" cy="45" r="37" fill="url(#binoV)"/><circle cx="98" cy="45" r="37" fill="url(#binoV)"/><rect width="160" height="90" fill="#06141a" mask="url(#binoM)"/>
+<path d="M80 39v12M74 45h12" stroke="#e8f4ef" stroke-width=".35" opacity=".7"/></svg><div id="binoTags"></div><p id="binoZ"></p></div>
 <div id="specBar" hidden>
   <div class="specRow">
     <button type="button" id="specPrev" aria-label="Tàu trước">◀</button>
@@ -1822,7 +1893,9 @@ function endGame(win){
     const place = G.teams[G.player.team].place || 1;
     $('#endStat').textContent = (win ? 'Đội của bạn là con tàu cuối cùng trên biển.' : 'Nước tràn đầy khoang, đội của bạn bị loại, xếp hạng '+place+'/'+TEAMS.length+'.')
       + ' Bạn hạ gục '+(G.player.kills||0)+' người, thời gian sống sót '+fmtTime(G.t)+'.';
-    { const rw=grantReward(win), el=$('#endReward'); if(el){ el.hidden=!rw; if(rw) el.textContent='Phần thưởng: +'+rw.xp+' kinh nghiệm, +'+rw.gold+' vàng'+(rw.up.length?'. Lên cấp '+rw.up[rw.up.length-1]+', được thưởng thêm '+rw.bonus+' vàng!':'.'); } }
+    { const rw=grantReward(win), el=$('#endReward'); if(el){ el.hidden=!rw; if(rw) el.textContent='Phần thưởng: +'+rw.xp+' kinh nghiệm, +'+rw.gold+' vàng'+(rw.up.length?'. Lên cấp '+rw.up[rw.up.length-1]+', được thưởng thêm '+rw.bonus+' vàng!':'.')
+      +(rw.rk?' Rank: '+rankName(rw.rk.to)+' ('+(rw.rk.d>=0?'+':'')+rw.rk.d+' RP)'+(rw.rk.up?', THĂNG HẠNG!':rw.rk.down?', bị rớt hạng.':'.'):' Đấu online để leo rank.')
+      +(rw.dmNew>0?' Xong '+rw.dmNew+' nhiệm vụ ngày, về sảnh để nhận vàng.':''); } }
     $('#again').textContent = G.net ? (NET.mode==='host' ? 'Về phòng chờ (kết thúc trận)' : 'Về phòng chờ') : 'Chơi lại';
     $('#watch').hidden = win || G.over || teamsAlive()<1;
     $('#touch').hidden=true; $('#side').hidden=true;
@@ -2618,8 +2691,12 @@ function lookBy(dx,dy,sens){
 const WNAME={sword:'kiếm', hammer:'búa'};
 function setWield(p,w){ if(w==='gun' && p.wield==='gun' && p.guns && p.guns.length){ cycleGun(p); return; } if(w==='gun' && !p.gun){ say(p,'Chưa có súng: lên đảo tìm súng'); return; } if(p.carry==='wood' && w!=='hammer'){ p.carry=null; p.patch=null; G.teams[p.team].inv.wood++; say(p,'Đã cất gỗ lại vào khoang'); } if(p.wield===w) return; p.wield=w; p.rl=0; say(p,w==='gun'?'Cầm '+gunName(p.gun):'Cầm '+WNAME[w]); }
 // a guest's choice goes to the host with the rest of their controls
-function wieldKey(w){ if(!G || !G.player.alive) return; if(NET.mode==='client'){ NET.actC.w++; NET.wv=w; } else setWield(G.player,w); }
+const BINO={lv:0, k:0, Z:[1,5,10]};
+function binoSet(lv){ BINO.lv=lv; const w=document.getElementById('w4'); if(w){ w.classList.toggle('on',lv>0); w.querySelector('span').textContent=lv?'x'+BINO.Z[lv]:'nhìn xa'; } const z=document.getElementById('binoZ'); if(z) z.textContent=lv?'x'+BINO.Z[lv]+' · bấm 4 để '+(lv<2?'phóng thêm':'cất ống nhòm'):''; }
+function binoKey(){ if(!running || !G || !G.player.alive) return; binoSet((BINO.lv+1)%3); }
+function wieldKey(w){ if(BINO.lv) binoSet(0); if(!G || !G.player.alive) return; if(NET.mode==='client'){ NET.actC.w++; NET.wv=w; } else setWield(G.player,w); }
 function nextWield(p){ const order=['sword','gun','hammer'].filter(w=>w!=='gun'||p.gun); setWield(p, order[(order.indexOf(p.wield)+1)%order.length]); }
+$('#w4').addEventListener('pointerdown',e=>{ e.preventDefault(); e.stopPropagation(); binoKey(); });
 for(const [id,w] of [['w1','sword'],['w2','gun'],['w3','hammer']]) $('#'+id).addEventListener('pointerdown',e=>{ e.preventDefault(); e.stopPropagation(); if(running) wieldKey(w); });
 addEventListener('keydown',e=>{
   if(e.target && e.target.tagName==='INPUT') return;
@@ -2631,13 +2708,14 @@ addEventListener('keydown',e=>{
   if(e.code==='KeyG') act.jump=true;
   if(e.code==='KeyV') toggleView();
   if(e.code==='KeyM'){ bigMap=!bigMap; if(bigMap && document.pointerLockElement) document.exitPointerLock(); else if(!bigMap && !invOpen) requestLock(); }
-  if(e.code==='Escape'){ bigMap=false; if(invOpen) toggleInv(false); }
+  if(e.code==='Escape'){ bigMap=false; if(BINO.lv) binoSet(0); if(invOpen) toggleInv(false); }
   if(e.code==='KeyB') toggleInv();
   if(e.code==='KeyT') doPing();
   if(e.code==='KeyK') VOICE.toggle();
   if(e.code==='Digit1') wieldKey('sword');
   if(e.code==='Digit2') wieldKey('gun');
   if(e.code==='Digit3') wieldKey('hammer');
+  if(e.code==='Digit4') binoKey();
   if(e.code==='KeyR') act.reload=true;
   if(e.code==='KeyF') act.cannon=true;
   if(e.code==='Space'){ act.hop=true; e.preventDefault(); }
@@ -3762,10 +3840,12 @@ const Scene3D = {
     const aimNow=aiming();
     if(!canAim(player)) ads.tog=false;
     ads.k+=((aimNow?1:0)-ads.k)*Math.min(1,dt*14); if(!aimNow && ads.k<.02) ads.k=0;
-    const fpActive = running && (cam.mode==='fp' || aimNow || ads.k>.3) && player.alive;
+    if(BINO.lv && (!running || !player.alive)) binoSet(0);
+    BINO.k+=((BINO.lv?1:0)-BINO.k)*Math.min(1,dt*10); if(!BINO.lv && BINO.k<.02) BINO.k=0;
+    const fpActive = running && (cam.mode==='fp' || aimNow || ads.k>.3 || BINO.k>.3) && player.alive;
     const scoped = fpActive && ads.k>.85 && player.gun && player.gun.type==='musket';
-    R3.vm.visible=fpActive && !scoped;
-    { const zf=1+((player.gun && ZOOM[player.gun.type] || 1.3)-1)*ads.k, fov=65/zf;
+    R3.vm.visible=fpActive && !scoped && BINO.k<.4;
+    { const zf=Math.max(1+((player.gun && ZOOM[player.gun.type] || 1.3)-1)*ads.k, 1+(BINO.Z[BINO.lv||1]-1)*BINO.k), fov=65/zf;
       if(Math.abs(camera.fov-fov)>.01){ camera.fov=fov; camera.updateProjectionMatrix(); R3.pm.uniforms.uScale.value=VH*DPR/(2*Math.tan(fov*Math.PI/360)); } }
     if(fpActive){
       const useGun=player.wield==='gun' && player.gun;
@@ -3822,9 +3902,15 @@ const Scene3D = {
     if(G.shake>0){ camera.position.x+=rand(-1,1)*G.shake*3; camera.position.y+=rand(-1,1)*G.shake*3; G.shake=Math.max(0,G.shake-dt*2.5); }
     G.recoil=Math.max(0,(G.recoil||0)-dt*8);
     const cx=camera.position.x, cz=camera.position.z;
-    const nearCam=(x,y,r)=>{ const dx=x-cx, dy=y-cz, L=16000+r; return dx*dx+dy*dy < L*L; };
+    const nearCam=(x,y,r)=>{ const dx=x-cx, dy=y-cz, L=(16000+r)*(1+.42*BINO.k); return dx*dx+dy*dy < L*L; };
     { const st=R3.OCEAN/260; R3.ocean.position.set(Math.round(cx/st)*st, 0, Math.round(cz/st)*st); }
 
+    { const bx=document.getElementById('bino'), on=BINO.k>.6; if(bx && bx.hidden===on) bx.hidden=!on;
+      if(on){ const tags=[], v=new THREE.Vector3(), W=innerWidth, H=innerHeight;
+        G.teams.forEach((tm,i)=>{ const b=tm.boat; if(!b.alive || i===player.team) return; const d=Math.hypot(b.x-player.x,b.y-player.y); if(d>23000 || d<300) return;
+          v.set(b.x,DECK+60,b.y).project(camera); if(v.z>1 || Math.abs(v.x)>.95 || Math.abs(v.y)>.9) return;
+          tags.push('<span style="left:'+((v.x+1)/2*W).toFixed(0)+'px;top:'+((1-v.y)/2*H).toFixed(0)+'px"><b></b>'+String(tm.name||(TEAMS[i]&&TEAMS[i].name)||'Tàu '+(i+1)).replace(/[<>&]/g,'')+' · '+Math.round(d/10)+' m</span>'); });
+        const tg=document.getElementById('binoTags'), h=tags.join(''); if(tg.dataset.h!==h){ tg.dataset.h=h; tg.innerHTML=h; } } }
     const Z=G.zone;
     R3.zone.position.set(Z.cx,1400,Z.cy); R3.zone.scale.set(Z.r,3000,Z.r);
     R3.nzone.visible=Z.state!=='final'; R3.nzone.position.set(Z.ncx,30,Z.ncy); R3.nzone.scale.set(Z.nr,80,Z.nr);
@@ -4005,7 +4091,7 @@ function applyWeather(dt){
   if(!DARK_SKY){ DARK_SKY=new THREE.Color(0x46545c); wxTmp=new THREE.Color(); }
   const w=weather(), {scene,om,hemi,sun,rain,camera}=R3, un=R3.om.uniforms;
   wxTmp.copy(R3.sky).lerp(DARK_SKY,w.dark); scene.background.copy(wxTmp); if(scene.fog) scene.fog.color.copy(wxTmp); un.uFog.value.copy(wxTmp);
-  const zf=1+((G&&G.player&&G.player.gun&&ZOOM[G.player.gun.type]||1.3)-1)*(ads.k||0), fk=typeof SPEC!=='undefined'&&SPEC.on?Math.max(Math.min(zf,2.6),Math.min(3.5,SPEC.D/2000)):Math.min(zf,2.6);
+  const zf=1+((G&&G.player&&G.player.gun&&ZOOM[G.player.gun.type]||1.3)-1)*(ads.k||0), fk=Math.max(typeof SPEC!=='undefined'&&SPEC.on?Math.max(Math.min(zf,2.6),Math.min(3.5,SPEC.D/2000)):Math.min(zf,2.6), 1+.45*BINO.k);
   if(scene.fog){ scene.fog.near=(3000-w.dark*1700)*fk; scene.fog.far=Math.min(23000,(16000-w.dark*8500)*fk); un.uNear.value=scene.fog.near; un.uFar.value=scene.fog.far; }
   un.uAmp.value=w.amp;
   R3.flash=Math.max(0,(R3.flash||0)-dt*3);
@@ -4351,7 +4437,7 @@ const GCK=['0:0','-1:0','-1:1','-1:2','-1:3','1:0','1:1','1:2','1:3'], ZST=['wai
 const enc=new TextEncoder(), bytes=o=>enc.encode(JSON.stringify(o)).length;
 const r1=v=>Math.round(v*10)/10, r2=v=>Math.round(v*100)/100, N=v=>typeof v==='number'&&isFinite(v)?v:0;
 const cleanNick=v=>String(v||'').replace(/[\u0000-\u001f\u007f-\u009f\u00ad\u200b-\u200f\u2028-\u202e\u2060-\u206f\ufeff]/g,'').trim().slice(0,16);
-const setP=(room,o)=>{ if(o && o.nick!==undefined){ o.ch=myCh(); o.sk=mySk(); } try{ room.presence(o).catch(()=>{}); }catch(_){} };
+const setP=(room,o)=>{ if(o && o.nick!==undefined){ o.ch=myCh(); o.sk=mySk(); o.rk=myRk(); } try{ room.presence(o).catch(()=>{}); }catch(_){} };
 Object.assign(NET,{apiP:null, rooms:null, code:'', nick:'', host:null, me:null, gen:0, g:null, cfg:{mode:'coop', crew:3}, myShip:0, order:[], full:new Set(),
   seq:0, evq:[], lastE:'', sendT:0, itemsS:['','','',''], itemsT:0, acts:{}, peerMap:new Map(), checkT:0,
   actC:{u:0,m:0,c:0,j:0,s:0,r:0,h:0,w:0}, ivL:[], ivS:0, ivSeen:{}, wv:'sword', inS:'', inT:0, evSeq:-1, pres:{}, itemsA:[[],[],[],[]], humS:'', first:true, hostT:0, hostSeen:false});
@@ -4785,7 +4871,7 @@ function lobbyPlayers(){
   for(const x of ps) if(!NET.order.includes(x.peer)) NET.order.push(x.peer);
   const host=ps.find(x=>x.presence.h===1 && (NET.mode==='host' ? x.sameTab : x.peer===NET.host));
   const rest=ps.filter(x=>x!==host && x.presence.h!==1).sort((a,b)=>NET.order.indexOf(a.peer)-NET.order.indexOf(b.peer));
-  return (host?[host]:[]).concat(rest).map(x=>({peer:x.peer, nick:cleanNick(x.presence.nick)||'Khách', host:x===host, me:x.sameTab, ship:clamp(N(x.presence.s)|0,0,5), ch:clamp(N(x.presence.ch)|0,0,13), sk:clamp(N(x.presence.sk)|0,0,7)}));
+  return (host?[host]:[]).concat(rest).map(x=>({peer:x.peer, nick:cleanNick(x.presence.nick)||'Khách', host:x===host, me:x.sameTab, ship:clamp(N(x.presence.s)|0,0,5), ch:clamp(N(x.presence.ch)|0,0,13), sk:clamp(N(x.presence.sk)|0,0,7), rk:clamp(N(x.presence.rk)|0,0,6)}));
 }
 NET.watch=function(){
   const R=this.rooms; if(!R || this.mode!=='client') return;
@@ -4848,7 +4934,7 @@ function renderLobby(){
   $('#lobList').replaceChildren(...pl.map((x,i)=>{
     const li=document.createElement('li'), b=document.createElement('span'), sm=document.createElement('small');
     const tm=(g.mode||'coop')==='team', seat=tm?seats[i]:null;
-    b.textContent=x.nick; sm.textContent=[tm?'Tàu '+(seat[0]+1)+(seat[0]!==x.ship?' (tàu '+(x.ship+1)+' đầy)':''):'', x.host?'chủ phòng':'', x.me?'bạn':'', i>=cap?'phòng đầy (tối đa '+cap+')':''].filter(Boolean).join(' · ');
+    b.replaceChildren(rkTag(x.rk|0,RANKS[x.rk|0].n), document.createTextNode(x.nick)); sm.textContent=[tm?'Tàu '+(seat[0]+1)+(seat[0]!==x.ship?' (tàu '+(x.ship+1)+' đầy)':''):'', x.host?'chủ phòng':'', x.me?'bạn':'', i>=cap?'phòng đầy (tối đa '+cap+')':''].filter(Boolean).join(' · ');
     li.append(b,sm); return li;
   }));
   for(const btn of $('#segMode').querySelectorAll('button')){ btn.setAttribute('aria-pressed', btn.dataset.v===(g.mode||'coop')?'true':'false'); btn.disabled=!host; }
@@ -5140,7 +5226,7 @@ function lbLoop(){
 }
 
 // v43 progression: XP gives levels, matches give gold; characters and gun skins are bought with gold
-const PRICE={Henry:[0,1],Anne:[0,1],Sharky:[0,1],Skeleton:[300,2],Mako:[450,3],Captain_Barbarossa:[600,4],Cannoneer:[800,5],NinjaVang:[1000,6],NinjaDen:[1200,7],Doki:[1400,8],DauLau:[1700,9],SoiXam:[2000,10],MatDen:[2400,12],AnhHoi:[3000,15]};
+const PRICE={Henry:[0,1],Anne:[0,1],Sharky:[0,1],Skeleton:[1500,2],Mako:[2500,3],Captain_Barbarossa:[3500,4],Cannoneer:[5000,5],NinjaVang:[6500,6],NinjaDen:[8000,7],Doki:[9500,8],DauLau:[11000,9],SoiXam:[13000,10],MatDen:[15000,12],AnhHoi:[18000,15]};
 const SKINS=[
   {n:'Mặc định', c:null, g:0, lv:1},
   {n:'Đồng thau', c:0xe0a860, e:0x2a1500, g:200, lv:1},
@@ -5153,7 +5239,7 @@ const SKINS=[
 const PPF=(()=>{ let o=null; try{ o=JSON.parse(localStorage.getItem('hcb-prof')); }catch(_){}
   o=o && typeof o==='object' ? o : {};
   const r={xp:Math.max(0,+o.xp||0), lv:Math.max(1,(+o.lv||1)|0), gold:Math.max(0,o.gold==null?300:(+o.gold||0)),
-    chars:Array.isArray(o.chars)?o.chars.filter(k=>PRICE[k]):[], skins:Array.isArray(o.skins)?o.skins.map(x=>x|0).filter(x=>SKINS[x]):[], skin:(+o.skin||0)|0};
+    chars:Array.isArray(o.chars)?o.chars.filter(k=>PRICE[k]):[], skins:Array.isArray(o.skins)?o.skins.map(x=>x|0).filter(x=>SKINS[x]):[], skin:(+o.skin||0)|0, rp:Math.max(0,+o.rp||0), dm:o.dm&&typeof o.dm==='object'&&Array.isArray(o.dm.ids)?o.dm:null};
   for(const k in PRICE) if(!PRICE[k][0] && !r.chars.includes(k)) r.chars.push(k);
   if(!r.skins.includes(0)) r.skins.push(0); 
   return r; })();
@@ -5167,15 +5253,87 @@ let SKINM=null;
 function skinMat(i){ if(!window.THREE) return null; if(!SKINM) SKINM=SKINS.map(s=>s.c==null?null:new THREE.MeshLambertMaterial({vertexColors:true, color:s.c, emissive:s.e||0})); return SKINM[i]||null; }
 function gunMatFor(sk,rar){ return (sk && skinMat(sk)) || R3.gunM[rar]; }
 function skinTick(t){ if(!SKINM) return; SKINS.forEach((s,i)=>{ if(s.rb && SKINM[i]){ const h=(t*.15)%1; SKINM[i].color.setHSL(h,.85,.62); SKINM[i].emissive.setHSL(h,.9,.14); } }); }
+
+// v46 rank: only online matches move rank points (RP); seven ranks, the first five split in III/II/I
+const RANKS=[
+  {n:'Đồng', rp:0, c:'#e08a4a', d:'#5a2c0e'}, {n:'Bạc', rp:150, c:'#e6eef2', d:'#56636e'}, {n:'Vàng', rp:400, c:'#ffd34d', d:'#7a4b00'},
+  {n:'Bạch kim', rp:750, c:'#74f2df', d:'#0e5f5a'}, {n:'Kim cương', rp:1200, c:'#8ccaff', d:'#1a3f96'}, {n:'Cao thủ', rp:1800, c:'#e09cff', d:'#5a137f'},
+  {n:'Thách đấu', rp:2600, c:'#ffe27a', d:'#a2231a'}];
+function rankOf(rp){ let i=0; while(i<RANKS.length-1 && rp>=RANKS[i+1].rp) i++; return i; }
+function rankName(rp){ const i=rankOf(rp); if(i>=5) return RANKS[i].n; const lo=RANKS[i].rp, hi=RANKS[i+1].rp, dv=Math.min(2,Math.floor((rp-lo)/((hi-lo)/3))); return RANKS[i].n+' '+['III','II','I'][dv]; }
+function myRk(){ return rankOf(PPF.rp||0); }
+function rkEmb(i){
+  const R=RANKS[i]||RANKS[0], id='rkg'+i;
+  let x='<svg class="rkE" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="'+id+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+R.c+'"/><stop offset="1" stop-color="'+R.d+'"/></linearGradient></defs>';
+  if(i>=4) x+='<path d="M7 11 1 8l2 9 5 3zM25 11l6-3-2 9-5 3z" fill="'+R.c+'" opacity=".85"/>';
+  if(i>=6) x+='<path d="M10 6 12 1l4 4 4-4 2 5z" fill="#ffd34d" stroke="#7a4b00" stroke-width=".8"/>';
+  x+='<path d="M16 5 25 8v8c0 6-4 10-9 12-5-2-9-6-9-12V8z" fill="url(#'+id+')" stroke="'+R.d+'" stroke-width="1.4"/>';
+  x+='<path d="M16 11l4 4.5-4 5.5-4-5.5z" fill="#fff" opacity="'+(.35+i*.09)+'"/>';
+  for(let k=0;k<Math.min(i,3);k++) x+='<circle cx="'+(16+(k-(Math.min(i,3)-1)/2)*4.5)+'" cy="25" r="1.3" fill="#fff" opacity=".85"/>';
+  return x+'</svg>';
+}
+function rkTag(i,txt){ const e=document.createElement('span'); e.className='rkTag rkF rk'+i; e.innerHTML=rkEmb(i)+'<b></b>'; e.querySelector('b').textContent=txt; return e; }
+function rankDelta(place,k,ti){
+  let d=place===1?50:place<=3?30:place<=5?20:place<=10?8:place<=15?-8:-15;
+  if(d<0 && ti>=4) d=Math.round(d*1.5); if(d<0 && ti===0) d=Math.round(d/2);
+  return d+Math.min(40,k*4);
+}
+// v46 daily missions: four a day (the first is always "play 3 matches"), gold for each and a bonus for all four
+const DM_POOL=[
+  {id:'m3', n:'Chơi 3 trận', k:'m', t:3, g:150}, {id:'m6', n:'Chơi 6 trận', k:'m', t:6, g:300}, {id:'on2', n:'Chơi 2 trận online', k:'on', t:2, g:250},
+  {id:'k10', n:'Hạ gục 10 người', k:'k', t:10, g:200}, {id:'k25', n:'Hạ gục 25 người', k:'k', t:25, g:400}, {id:'t10', n:'Vào top 10 ba lần', k:'t10', t:3, g:200},
+  {id:'t5', n:'Vào top 5 hai lần', k:'t5', t:2, g:250}, {id:'t3', n:'Vào top 3 một lần', k:'t3', t:1, g:300}, {id:'w1', n:'Thắng 1 trận (tàu cuối cùng)', k:'w', t:1, g:500}];
+const DM_BONUS=300;
+function dmDay(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function dmGet(){
+  const day=dmDay();
+  if(!PPF.dm || PPF.dm.d!==day){
+    let h=2166136261; for(const ch of day) h=Math.imul(h^ch.charCodeAt(0),16777619)>>>0;
+    const ids=['m3'];
+    while(ids.length<4){ h=Math.imul(h^(h>>>15),2246822507)>>>0; h=Math.imul(h^(h>>>13),3266489909)>>>0; const c=DM_POOL[1+h%(DM_POOL.length-1)]; if(!ids.includes(c.id)) ids.push(c.id); }
+    PPF.dm={d:day, ids, c:{}, got:[], b:0}; saveProf();
+  }
+  const D=PPF.dm; D.c=D.c&&typeof D.c==='object'?D.c:{}; D.got=Array.isArray(D.got)?D.got:[];
+  return D;
+}
+function dmList(){ const D=dmGet(); return D.ids.map((id,i)=>{ const m=DM_POOL.find(x=>x.id===id)||DM_POOL[0], v=Math.min(m.t,D.c[m.k]||0); return {m, v, done:v>=m.t, got:!!D.got[i], i}; }); }
+function dmReady(){ const L=dmList(), D=PPF.dm; return L.filter(x=>x.done&&!x.got).length + (L.every(x=>x.got)&&!D.b?1:0); }
+function dmClaim(i){ const L=dmList(), D=PPF.dm;
+  if(i<0){ if(L.every(x=>x.got) && !D.b){ D.b=1; PPF.gold+=DM_BONUS; } }
+  else { const x=L[i]; if(x && x.done && !x.got){ D.got[i]=true; PPF.gold+=x.m.g; } }
+  saveProf(); profUI(); dmUI(); }
+function dmUI(){
+  const box=$('#dmList'); if(!box) return; const L=dmList(), D=PPF.dm;
+  const row=(name,v,t,g,state,i)=>{ const li=document.createElement('li'); li.className='dmRow'+(state==='got'?' got':'');
+    li.innerHTML='<div class="dmTxt"><b></b><i><s></s></i><small></small></div><button type="button"></button>';
+    li.querySelector('b').textContent=name; li.querySelector('s').style.width=Math.min(100,v/t*100)+'%'; li.querySelector('small').textContent=v+'/'+t;
+    const bt=li.querySelector('button'); bt.dataset.i=i; bt.textContent=state==='got'?'Đã nhận':'🪙 '+g; bt.disabled=state!=='ready'; bt.classList.toggle('ready',state==='ready'); return li; };
+  const all=L.filter(x=>x.got).length;
+  box.replaceChildren(...L.map(x=>row(x.m.n,x.v,x.m.t,x.m.g,x.got?'got':x.done?'ready':'todo',x.i)),
+    row('Hoàn thành cả 4 nhiệm vụ',all,4,DM_BONUS,D.b?'got':all===4?'ready':'todo',-1));
+  const now=new Date(), nx=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1), mins=Math.ceil((nx-now)/60000);
+  $('#dmReset').textContent='Nhiệm vụ mới sau '+Math.floor(mins/60)+' giờ '+(mins%60)+' phút. Vàng nhận được dùng mua nhân vật và skin súng.';
+}
+function rankUI(){
+  const g=$('#rankGrid'); if(!g) return; const rp=PPF.rp||0, me=rankOf(rp);
+  g.replaceChildren(...RANKS.map((R,i)=>{ const c=document.createElement('div'); c.className='rkCard rkF rk'+i+(i===me?' me':'');
+    c.innerHTML=rkEmb(i)+'<b></b><small></small>'; c.querySelector('b').textContent=R.n; c.querySelector('small').textContent=(i===me?'Bạn đang ở đây · ':'')+'từ '+R.rp+' RP'; return c; }));
+  const nx=RANKS[me+1]; $('#rankMe').replaceChildren(rkTag(me,rankName(rp)), document.createTextNode(' '+rp+' RP'+(nx?' · còn '+(nx.rp-rp)+' RP lên '+nx.n:' · hạng cao nhất')));
+}
+function dmAdd(k,n){ const D=dmGet(); D.c[k]=(D.c[k]||0)+n; }
 function grantReward(win){
   const p=G && G.player; if(!p || !p.human || G.rewarded) return null; G.rewarded=true;
   const nT=G.teams.length, place=win?1:(G.teams[p.team].place||nT), k=p.kills||0;
   const xp=40+k*25+Math.round((nT-place)/Math.max(1,nT-1)*120)+(win?150:0)+Math.min(60,Math.floor(G.t/10));
   let gold=15+k*10+(nT-place)*4+(win?120:0), bonus=0; const up=[];
+  const dm0=dmList().filter(x=>x.done).length;
+  dmAdd('m',1); if(G.net) dmAdd('on',1); dmAdd('k',k); if(place<=10) dmAdd('t10',1); if(place<=5) dmAdd('t5',1); if(place<=3) dmAdd('t3',1); if(win) dmAdd('w',1);
+  const dmNew=dmList().filter(x=>x.done).length-dm0;
+  let rk=null; if(G.net){ const r0=PPF.rp||0, ti=rankOf(r0), d=rankDelta(place,k,ti); PPF.rp=Math.max(0,r0+d); rk={d:PPF.rp-r0, to:PPF.rp, up:rankOf(PPF.rp)>ti, down:rankOf(PPF.rp)<ti}; }
   PPF.xp+=xp;
   while(PPF.xp>=needXP(PPF.lv)){ PPF.xp-=needXP(PPF.lv); PPF.lv++; bonus+=50*PPF.lv; up.push(PPF.lv); }
   PPF.gold+=gold+bonus; saveProf(); profUI();
-  return {xp, gold, bonus, up};
+  return {xp, gold, bonus, up, rk, dmNew};
 }
 function buyCh(i){
   const c=PIRATES[i]; if(!c || ownsCh(i)) return true; const pr=PRICE[c.k]||[0,1];
@@ -5197,6 +5355,8 @@ function profUI(){
     const tg=q('lbTag'); if(tg) tg.textContent = c.t + (own ? '' : ' · giá '+pr[0]+' vàng, từ cấp '+pr[1]);
   }
   const sh=q('shop'); if(sh && !sh.hidden) shopUI();
+  const rb=q('lbRank'); if(rb){ const i=myRk(); rb.className='lbRank rkF rk'+i; rb.innerHTML=rkEmb(i)+'<b></b>'; rb.querySelector('b').textContent=rankName(PPF.rp||0); }
+  const dd=q('lbDmDot'); if(dd){ const n=dmReady(); dd.hidden=!n; dd.textContent=n; }
 }
 function gunShot(i){
   if(!LB.r || !window.THREE || !R3) return '';
@@ -5221,7 +5381,13 @@ function profBuild(){
   const gd=document.createElement('div'); gd.className='lbGold'; gd.title='Vàng'; gd.innerHTML='🪙 <b id="pfGold"></b>';
   const sh=document.createElement('button'); sh.type='button'; sh.className='lbIcon'; sh.id='lbShop';
   sh.innerHTML=lbIcon('<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>')+'<b>Cửa hàng</b>';
-  top.insertBefore(pf,help); top.insertBefore(gd,help); top.insertBefore(sh,help);
+  const rb=document.createElement('button'); rb.type='button'; rb.id='lbRank'; rb.title='Rank online';
+  const dm=document.createElement('button'); dm.type='button'; dm.className='lbIcon'; dm.id='lbDm';
+  dm.innerHTML=lbIcon('<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>')+'<b>Nhiệm vụ</b><em id="lbDmDot" hidden></em>';
+  top.insertBefore(rb,help); top.insertBefore(pf,help); top.insertBefore(gd,help); top.insertBefore(dm,help); top.insertBefore(sh,help);
+  rb.onclick=()=>{ $('#rankP').hidden=false; rankUI(); }; $('#rankClose').onclick=()=>{ $('#rankP').hidden=true; };
+  dm.onclick=()=>{ $('#dmP').hidden=false; dmUI(); }; $('#dmClose').onclick=()=>{ $('#dmP').hidden=true; };
+  $('#dmList').onclick=e=>{ const b=e.target.closest('button'); if(b && !b.disabled) dmClaim(+b.dataset.i); };
   sh.onclick=()=>{ $('#shop').hidden=false; shopUI(); };
   $('#shopClose').onclick=()=>{ $('#shop').hidden=true; };
   $('#shopGrid').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; const i=+b.dataset.i, s=SKINS[i];
