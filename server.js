@@ -60,9 +60,12 @@ const ADMIN_NICK=slug(process.env.ADMIN_NICK||'');
 const pub=u=>({nick:u.nick, games:u.games, wins:u.wins, kills:u.kills, online_games:u.online_games, best_place:u.best_place, admin:!!ADMIN_NICK && u.slug===ADMIN_NICK});
 async function userOf(token){ if(!token || typeof token!=='string' || token.length>100) return null; const id=await db.session(sha(token)); return id ? db.byId(id) : null; }
 const bearer=req=>((req.headers.authorization||'').match(/^Bearer (\S+)$/)||[])[1]||'';
-// slow down password guessing: 10 tries per address per 10 minutes
+// slow down password guessing: only failed tries count, per address+nick, 8 per 10 minutes;
+// a whole class behind one school address can still sign up (60 new nicks per address per 10 minutes)
 const tries=new Map();
-function tooMany(ip){ const now=Date.now(), t=(tries.get(ip)||[]).filter(x=>now-x<600000); t.push(now); tries.set(ip,t); return t.length>10; }
+const recent=k=>(tries.get(k)||[]).filter(x=>Date.now()-x<600000);
+function blocked(k,max){ return recent(k).length>=max; }
+function fail(k){ const t=recent(k); t.push(Date.now()); tries.set(k,t); }
 setInterval(()=>{ const now=Date.now(); for(const [ip,t] of tries) if(!t.some(x=>now-x<600000)) tries.delete(ip); },600000);
 const lastResult=new Map();
 
@@ -80,10 +83,12 @@ async function api(req,res,p){
     const nick=cleanNick(b.nick), s=slug(nick), pass=String(b.pass||'');
     if(s.length<3) return json(res,400,{error:'nick'});
     if(pass.length<6 || pass.length>72) return json(res,400,{error:'pass'});
-    if(tooMany(ip)) return json(res,429,{error:'slow'});
+    const kL='L'+ip+'|'+s, kS='S'+ip;
+    if(p==='/api/login' && blocked(kL,8)) return json(res,429,{error:'slow'});
+    if(p==='/api/signup' && blocked(kS,60)) return json(res,429,{error:'slow'});
     let u;
-    if(p==='/api/signup'){ u=await db.create(s,nick,hashPass(pass)); if(!u) return json(res,409,{error:'taken'}); }
-    else { u=await db.bySlug(s); if(!u || !checkPass(pass,u.pass)) return json(res,401,{error:'wrong'}); }
+    if(p==='/api/signup'){ u=await db.create(s,nick,hashPass(pass)); if(!u) return json(res,409,{error:'taken'}); fail(kS); }
+    else { u=await db.bySlug(s); if(!u || !checkPass(pass,u.pass)){ fail(kL); return json(res,401,{error:'wrong'}); } tries.delete(kL); }
     const token=crypto.randomBytes(24).toString('base64url');
     await db.addSession(sha(token),u.id);
     return json(res,200,{token, user:pub(u)});
