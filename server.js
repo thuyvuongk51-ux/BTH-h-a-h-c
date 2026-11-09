@@ -3,7 +3,7 @@
 // The match itself still runs on the room host's device; this server only passes state along, quickly and evenly.
 const http=require('http'), fs=require('fs'), path=require('path'), crypto=require('crypto'), {WebSocketServer}=require('ws');
 const PORT=process.env.PORT||10000, PUB=path.join(__dirname,'public');
-const TYPES={'.html':'text/html; charset=utf-8','.js':'application/javascript','.png':'image/png','.json':'application/json','.ico':'image/x-icon'};
+const TYPES={'.html':'text/html; charset=utf-8','.js':'application/javascript; charset=utf-8','.png':'image/png','.json':'application/json','.ico':'image/x-icon'};
 
 /* ---------- storage: Postgres when DATABASE_URL is set, otherwise a JSON file (wiped whenever Render restarts the server) ---------- */
 function pgStore(url){
@@ -106,6 +106,7 @@ async function api(req,res,p){
   return json(res,404,{error:'not found'});
 }
 
+const zlib=require('zlib'), GZ=new Map();
 const server=http.createServer((req,res)=>{
   let p=decodeURIComponent((req.url||'/').split('?')[0]);
   if(p.startsWith('/api/')){ api(req,res,p).catch(e=>{ console.error(e.message); if(!res.headersSent) json(res,500,{error:'server'}); }); return; }
@@ -113,7 +114,15 @@ const server=http.createServer((req,res)=>{
   if(p==='/') p='/index.html';
   const f=path.normalize(path.join(PUB,p));
   if(!f.startsWith(PUB) || !fs.existsSync(f) || fs.statSync(f).isDirectory()){ res.writeHead(404); res.end('not found'); return; }
-  res.writeHead(200,{'content-type':TYPES[path.extname(f)]||'application/octet-stream','cache-control':'no-cache'});
+  // game data in /assets carry ?v=<hash> in their URL, so browsers keep them until a new version changes the hash
+  const ext=path.extname(f), st=fs.statSync(f), immut=p.startsWith('/assets/');
+  const head={'content-type':TYPES[ext]||'application/octet-stream','cache-control':immut?'public, max-age=31536000, immutable':'no-cache'};
+  if(/\.(js|html|json)$/.test(f) && /\bgzip\b/.test(req.headers['accept-encoding']||'')){
+    const k=f+'|'+st.mtimeMs; let gz=GZ.get(k);
+    if(!gz){ gz=zlib.gzipSync(fs.readFileSync(f),{level:9}); GZ.set(k,gz); }
+    res.writeHead(200,{...head,'content-encoding':'gzip','vary':'Accept-Encoding','content-length':gz.length}); res.end(gz); return;
+  }
+  res.writeHead(200,head);
   fs.createReadStream(f).pipe(res);
 });
 

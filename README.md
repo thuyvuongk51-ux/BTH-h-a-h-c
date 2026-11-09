@@ -9,6 +9,10 @@ Thư mục này gồm trang game và một máy chủ nhỏ. Máy chủ lo ba vi
 3. Trên https://render.com bấm **New → Web Service**, chọn repository đó. Chọn Region **Singapore**, Runtime **Node**, Build Command `npm install`, Start Command `npm start`.
 4. Ở mục **Environment**, thêm các biến ở phần dưới, rồi bấm **Create Web Service**.
 
+## Cập nhật bản mới (từ v47)
+
+Dữ liệu model, âm thanh đã tách khỏi `index.html` sang thư mục `public/assets/` (mỗi file dưới 5 MB). Mỗi lần cập nhật, thầy tải lên **cả thư mục `public`** (gồm `index.html` và `assets/`), cùng `server.js` nếu có thay đổi. Trình duyệt sẽ giữ sẵn các file model đã tải, lần sau mở game nhanh hơn; file nào đổi thì tự tải lại.
+
 ## Các biến trong mục Environment của Render
 
 | Biến | Ý nghĩa |
